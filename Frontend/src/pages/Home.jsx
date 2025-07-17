@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import profileImg from "../assets/Portfolio_Welcome_page.jpg";
+import profileImg from "../assets/portfolio_welcome_page.jpg";
 import profileImg2 from "../assets/formal_pic.jpg";
 import OCPJSE17 from "../assets/OCPJSE17.jpg";
 import APEX24CDOCP from "../assets/APEX24CDOCP.jpg";
