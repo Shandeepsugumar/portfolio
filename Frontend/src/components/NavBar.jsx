@@ -2,6 +2,19 @@ import React from "react";
 import "./navbar.css";
 
 function NavBar() {
+  // Custom smooth scroll with highlight
+  const handleNavClick = (e, sectionId) => {
+    e.preventDefault();
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      section.classList.add("section-highlight");
+      setTimeout(() => {
+        section.classList.remove("section-highlight");
+      }, 800);
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">
@@ -12,12 +25,12 @@ function NavBar() {
         <span style={{fontWeight: 700, fontSize: '2rem', color: '#ffd54f', letterSpacing: '2px', fontFamily: 'Montserrat, Inter, Segoe UI, Arial, sans-serif'}}>MyPortfolio</span>
       </div>
       <div className="navbar-links">
-        <a href="#home" className="nav-link">Home</a>
-        <a href="#about" className="nav-link">About</a>
-        <a href="#skills" className="nav-link">Skills</a>
-        <a href="#projects" className="nav-link">Projects</a>
-        <a href="#certificates" className="nav-link">Certificates</a>
-        <a href="#contact" className="nav-link">Contact</a>
+        <a href="#home" className="nav-link" onClick={e => handleNavClick(e, "home")}>Home</a>
+        <a href="#about" className="nav-link" onClick={e => handleNavClick(e, "about")}>About</a>
+        <a href="#skills" className="nav-link" onClick={e => handleNavClick(e, "skills")}>Skills</a>
+        <a href="#projects" className="nav-link" onClick={e => handleNavClick(e, "projects")}>Projects</a>
+        <a href="#certificates" className="nav-link" onClick={e => handleNavClick(e, "certificates")}>Certificates</a>
+        <a href="#contact" className="nav-link" onClick={e => handleNavClick(e, "contact")}>Contact</a>
       </div>
     </nav>
   );
