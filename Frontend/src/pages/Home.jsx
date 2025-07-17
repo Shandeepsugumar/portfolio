@@ -56,48 +56,48 @@ function Home() {
   };
 
   return (
-    <div className="home-container full-width" style={{ width: '100vw', margin: 0, padding: 0, overflowX: 'hidden' }}>
+    <div className="home-container full-width">
       {/* Hero Section */}
-      <section id="home" className="hero-section" style={{minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', padding: '4rem 0 2rem 0'}}>
-        <div className="hero-center-content" style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '1400px', gap: '4rem'}}>
-          <div className="hero-left" style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: '600px'}}>
-            <h1 className="hero-name-main" style={{fontSize: '4rem', fontWeight: 900, color: '#ffd54f', marginBottom: '0.5rem', letterSpacing: '2px'}}>SHANDEEP</h1>
-            <h2 className="hero-title-main" style={{fontSize: '2rem', fontWeight: 600, color: '#bfc8e2', marginBottom: '1.5rem'}}>Software Developer / Web Developer</h2>
-            <p className="hero-intro" style={{fontSize: '1.2rem', color: '#e5e5e5', marginBottom: '2rem'}}>I create beautiful and interactive websites with modern technologies.<br/>Welcome to my portfolio!</p>
-            <div className="hero-socials" style={{display: 'flex', gap: '1.2rem', marginBottom: '2.5rem'}}>
-              <a href="https://github.com/ShandeepSugumar" target="_blank" rel="noopener noreferrer" className="hero-social-icon facebook" style={{background: '#18305a', color: '#ffd54f', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', boxShadow: '0 2px 8px rgba(24,90,219,0.12)', border: '2px solid #ffd54f', transition: 'background 0.2s, color 0.2s, box-shadow 0.2s'}}><FaGithub /></a>
-              <a href="https://linkedin.com/in/shandeep-sugumar-bb5203220" target="_blank" rel="noopener noreferrer" className="hero-social-icon linkedin" style={{background: '#18305a', color: '#ffd54f', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', boxShadow: '0 2px 8px rgba(24,90,219,0.12)', border: '2px solid #ffd54f', transition: 'background 0.2s, color 0.2s, box-shadow 0.2s'}}><FaLinkedin /></a>
-              <a href="mailto:shandeepgeek@gmail.com" className="hero-social-icon instagram" style={{background: '#18305a', color: '#ffd54f', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', boxShadow: '0 2px 8px rgba(24,90,219,0.12)', border: '2px solid #ffd54f', transition: 'background 0.2s, color 0.2s, box-shadow 0.2s'}}><FaEnvelope /></a>
+      <section id="home" className="hero-section">
+        <div className="hero-center-content">
+          <div className="hero-left">
+            <h1 className="hero-name-main">SHANDEEP</h1>
+            <h2 className="hero-title-main">Software Developer / Web Developer</h2>
+            <p className="hero-intro">I create beautiful and interactive websites with modern technologies.<br/>Welcome to my portfolio!</p>
+            <div className="hero-socials">
+              <a href="https://github.com/ShandeepSugumar" target="_blank" rel="noopener noreferrer" className="hero-social-icon facebook"><FaGithub /></a>
+              <a href="https://linkedin.com/in/shandeep-sugumar-bb5203220" target="_blank" rel="noopener noreferrer" className="hero-social-icon linkedin"><FaLinkedin /></a>
+              <a href="mailto:shandeepgeek@gmail.com" className="hero-social-icon instagram"><FaEnvelope /></a>
             </div>
-            <div className="scroll-down-indicator" style={{marginTop: '2.5rem', color: '#ffd54f', fontSize: '2.2rem', animation: 'bounce 1.5s infinite', display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
+            <div className="scroll-down-indicator">
               <FaArrowDown />
             </div>
           </div>
-          <div className="hero-img-wrapper" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '320px'}}>
-            <img src={profileImg} alt="Profile" className="hero-profile-img" style={{width: '220px', height: '220px', borderRadius: '50%', border: '7px solid #ffd54f', boxShadow: '0 0 60px 0 #ffd54faa', objectFit: 'cover', background: '#fff'}} />
+          <div className="hero-img-wrapper">
+            <img src={profileImg} alt="Profile" className="hero-profile-img" />
           </div>
         </div>
       </section>
       {/* About Section */}
-      <section id="about" className="about-section" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem 0 1rem 0', width: '100vw', minWidth: '100vw', margin: 0, background: 'linear-gradient(90deg, #18305a 60%, #23406e 100%)'}}>
-        <div className="about-card-modern" style={{background: 'rgba(24, 48, 90, 0.98)', borderRadius: '24px', boxShadow: '0 4px 32px 0 #185adb33, 0 0 0 2px #ffd54f22', width: '1100px', maxWidth: '95vw', margin: '0 auto', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '2.5rem 2.5rem 2.5rem 2.5rem', textAlign: 'left', gap: '3rem', justifyContent: 'center'}}>
-          <div className="about-img-wrapper" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 0, flex: '0 0 260px'}}>
-            <img src={profileImg2} alt="Profile" className="about-profile-img" style={{width: '220px', height: '220px', borderRadius: '50%', border: '7px solid #ffd54f', boxShadow: '0 0 60px 0 #ffd54faa', objectFit: 'cover', background: '#fff'}} />
+      <section id="about" className="about-section">
+        <div className="about-card-modern">
+          <div className="about-img-wrapper">
+            <img src={profileImg2} alt="Profile" className="about-profile-img" />
           </div>
-          <div className="about-content" style={{flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-            <h2 className="about-title" style={{color: '#ffd54f', fontSize: '2.5rem', marginBottom: '1.5rem', fontWeight: 800, textAlign: 'left'}}>About Me</h2>
-            <p className="about-summary" style={{color: '#e5e5e5', fontSize: '1.15rem', marginBottom: '1.5rem', textAlign: 'left'}}>
+          <div className="about-content">
+            <h2 className="about-title">About Me</h2>
+            <p className="about-summary">
               I'm Shandeep Sugumar, a dedicated Full-Stack Developer with a strong command of Java, JavaFX, Node.js, MongoDB, Flutter, and Firebase, along with a solid grasp of DevOps practices. I enjoy building robust, scalable applications and optimizing the development process using tools like Docker, Jenkins, and Kubernetes for CI/CD and container orchestration.<br/>
               With multiple successful projects under my belt—ranging from mobile shopping applications to interactive Java-based games—I've developed a deep understanding of both front-end and back-end development. I strive to create seamless user experiences with clean, maintainable code.<br/>
               I hold certifications from Oracle as a Java SE 17 Developer and Oracle APEX Cloud Developer, reflecting my ability to design, build, and deploy enterprise-level applications. These programs have strengthened my object-oriented design principles, API handling, and secure database management skills.
             </p>
-            <h1 style={{color: '#ffd54f', fontSize: '1.5rem', margin: '1.5rem 0 0.7rem 0', fontWeight: 700, textAlign: 'left'}}>Career Goal:</h1>
-            <p style={{textAlign: 'left'}}>My goal is to work in a challenging and innovative environment where I can contribute to meaningful projects, continue learning emerging technologies, and grow into a lead role where I can mentor others while delivering impactful software solutions.</p>
-            <div className="about-skills-badges" style={{marginTop: '1.5rem', textAlign: 'left'}}>
-              <span className="badge" style={{display: 'inline-block', background: '#ffd54f', color: '#18305a', fontWeight: 600, borderRadius: '16px', padding: '0.4em 1.2em', marginRight: '0.7em', marginBottom: '0.5em', fontSize: '1em'}}>Problem Solver</span>
-              <span className="badge" style={{display: 'inline-block', background: '#ffd54f', color: '#18305a', fontWeight: 600, borderRadius: '16px', padding: '0.4em 1.2em', marginRight: '0.7em', marginBottom: '0.5em', fontSize: '1em'}}>Team Player</span>
-              <span className="badge" style={{display: 'inline-block', background: '#ffd54f', color: '#18305a', fontWeight: 600, borderRadius: '16px', padding: '0.4em 1.2em', marginRight: '0.7em', marginBottom: '0.5em', fontSize: '1em'}}>UI/UX Enthusiast</span>
-              <span className="badge" style={{display: 'inline-block', background: '#ffd54f', color: '#18305a', fontWeight: 600, borderRadius: '16px', padding: '0.4em 1.2em', marginRight: '0.7em', marginBottom: '0.5em', fontSize: '1em'}}>Quick Learner</span>
+            <h1>Career Goal:</h1>
+            <p>My goal is to work in a challenging and innovative environment where I can contribute to meaningful projects, continue learning emerging technologies, and grow into a lead role where I can mentor others while delivering impactful software solutions.</p>
+            <div className="about-skills-badges">
+              <span className="badge">Problem Solver</span>
+              <span className="badge">Team Player</span>
+              <span className="badge">UI/UX Enthusiast</span>
+              <span className="badge">Quick Learner</span>
             </div>
           </div>
         </div>
@@ -171,6 +171,15 @@ function Home() {
           autoplaySpeed={5000}
           arrows={false}
           className="project-slider"
+          responsive={[
+            {
+              breakpoint: 900,
+              settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+              }
+            }
+          ]}
         >
         <div>
                     <div className="project-card">
@@ -277,7 +286,6 @@ function Home() {
           </Slider>
         </div>
       </section>
-      
       {/* Contact Section */}
       <section id="contact" className="contact-section contact-modern">
         <div className="contact-card">
@@ -292,14 +300,14 @@ function Home() {
                 Whether it's about job openings, collaborations, or tech discussions, feel free to reach out. I'll get back to you as soon as possible!
               </p>
               <div className="contact-modern-details">
-                <div className="contact-modern-detail"><span className="contact-modern-icon" style={{ color: '#ffd54f', fontSize: '1.3rem' }}>➤</span> <span style={{ color: '#ffd54f' }}>shandeepgeek@gmail.com</span></div>
-                <div className="contact-modern-detail"><span className="contact-modern-icon" style={{ color: '#ff4081', fontSize: '1.3rem' }}>📞</span> <span style={{ color: '#ffd54f' }}>+91 7010161033</span></div>
+                <div className="contact-modern-detail"><span className="contact-modern-icon">➤</span> <span style={{ color: '#ffd54f' }}>shandeepgeek@gmail.com</span></div>
+                <div className="contact-modern-detail"><span className="contact-modern-icon">📞</span> <span style={{ color: '#ffd54f' }}>+91 7010161033</span></div>
               </div>
               <div className="contact-modern-socials">
-                <a href="https://www.facebook.com/sugushandeep.sugushandeep/" className="contact-modern-social facebook" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}><span><FaFacebook /></span></a>
-                <a href="https://x.com/shandeepgeek?t=JIwUbx-gpZ5b18sZxKKZng&s=09" className="contact-modern-social twitter" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}><span><FaTwitter /></span></a>
-                <a href="https://www.instagram.com/shandeep._/?next=%2F&hl=en" className="contact-modern-social instagram" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}><span><FaInstagram /></span></a>
-                <a href="https://www.linkedin.com/in/shandeep-sugumar-bb5203220/" className="contact-modern-social linkedin" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}><span><FaLinkedin /></span></a>
+                <a href="https://www.facebook.com/sugushandeep.sugushandeep/" className="contact-modern-social facebook"><span><FaFacebook /></span></a>
+                <a href="https://x.com/shandeepgeek?t=JIwUbx-gpZ5b18sZxKKZng&s=09" className="contact-modern-social twitter"><span><FaTwitter /></span></a>
+                <a href="https://www.instagram.com/shandeep._/?next=%2F&hl=en" className="contact-modern-social instagram"><span><FaInstagram /></span></a>
+                <a href="https://www.linkedin.com/in/shandeep-sugumar-bb5203220/" className="contact-modern-social linkedin"><span><FaLinkedin /></span></a>
               </div>
             </div>
             {/* Right Side: Form */}
@@ -313,9 +321,8 @@ function Home() {
           </div>
         </div>
       </section>
-      <footer class="footer">© 2025 Shandeep Sugumar | Portfolio. All rights reserved.</footer>
+      <footer className="footer">© 2025 Shandeep Sugumar | Portfolio. All rights reserved.</footer>
     </div>
-    
   );
 }
 

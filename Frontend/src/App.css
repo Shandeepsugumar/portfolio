@@ -769,6 +769,28 @@ section {
   .project-card, .certificate-card {
     width: 95vw;
     padding: 1rem 0.5rem 1rem 0.5rem;
+    min-width: 0;
+    max-width: 98vw;
+    box-sizing: border-box;
+  }
+  .projects-slider, .certificates-slider {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  .slick-slide {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 100vw !important;
+    box-sizing: border-box;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .slick-list {
+    overflow: visible !important;
   }
   .project-card h3 {
     font-size: 1.1rem;

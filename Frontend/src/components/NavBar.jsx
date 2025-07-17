@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./navbar.css";
 
 function NavBar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   // Custom smooth scroll with highlight
   const handleNavClick = (e, sectionId) => {
     e.preventDefault();
@@ -13,6 +15,7 @@ function NavBar() {
         section.classList.remove("section-highlight");
       }, 800);
     }
+    setMenuOpen(false); // Close menu on link click (mobile)
   };
 
   return (
@@ -24,7 +27,30 @@ function NavBar() {
         </svg>
         <span style={{fontWeight: 700, fontSize: '2rem', color: '#ffd54f', letterSpacing: '2px', fontFamily: 'Montserrat, Inter, Segoe UI, Arial, sans-serif'}}>MyPortfolio</span>
       </div>
+      <button
+        className={`navbar-hamburger${menuOpen ? ' open' : ''}`}
+        aria-label="Toggle navigation menu"
+        aria-expanded={menuOpen}
+        aria-controls="navbar-mobile-menu"
+        onClick={() => setMenuOpen((open) => !open)}
+      >
+        <span className="bar"></span>
+        <span className="bar"></span>
+        <span className="bar"></span>
+      </button>
       <div className="navbar-links">
+        <a href="#home" className="nav-link" onClick={e => handleNavClick(e, "home")}>Home</a>
+        <a href="#about" className="nav-link" onClick={e => handleNavClick(e, "about")}>About</a>
+        <a href="#skills" className="nav-link" onClick={e => handleNavClick(e, "skills")}>Skills</a>
+        <a href="#projects" className="nav-link" onClick={e => handleNavClick(e, "projects")}>Projects</a>
+        <a href="#certificates" className="nav-link" onClick={e => handleNavClick(e, "certificates")}>Certificates</a>
+        <a href="#contact" className="nav-link" onClick={e => handleNavClick(e, "contact")}>Contact</a>
+      </div>
+      <div
+        id="navbar-mobile-menu"
+        className={`navbar-mobile-menu${menuOpen ? ' open' : ''}`}
+        aria-hidden={!menuOpen}
+      >
         <a href="#home" className="nav-link" onClick={e => handleNavClick(e, "home")}>Home</a>
         <a href="#about" className="nav-link" onClick={e => handleNavClick(e, "about")}>About</a>
         <a href="#skills" className="nav-link" onClick={e => handleNavClick(e, "skills")}>Skills</a>
