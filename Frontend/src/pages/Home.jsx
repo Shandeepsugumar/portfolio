@@ -15,6 +15,8 @@ import "slick-carousel/slick/slick-theme.css";
 
 function Home() {
   const skillsRef = useRef(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalImg, setModalImg] = useState(null);
   useEffect(() => {
     const handleScroll = () => {
       if (!skillsRef.current) return;
@@ -57,9 +59,18 @@ function Home() {
 
   return (
     <div className="home-container full-width">
+      {/* Certificate Modal */}
+      {modalOpen && (
+        <div className="certificate-modal-overlay" onClick={() => setModalOpen(false)}>
+          <div className="certificate-modal-content" onClick={e => e.stopPropagation()}>
+            <button className="certificate-modal-close" onClick={() => setModalOpen(false)}>&times;</button>
+            <img src={modalImg} alt="Certificate" className="certificate-modal-img" />
+          </div>
+        </div>
+      )}
       {/* Hero Section */}
       <section id="home" className="hero-section">
-        <div className="hero-center-content">
+        <div className="hero-content-wrapper">
           <div className="hero-left">
             <h1 className="hero-name-main">SHANDEEP</h1>
             <h2 className="hero-title-main">Software Developer / Web Developer</h2>
