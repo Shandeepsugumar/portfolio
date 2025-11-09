@@ -9,7 +9,7 @@ import NVIDIA from "../assets/NVIDIA.png";
 import intership from "../assets/internship.png";
 import KEC_Hackthon from "../assets/KEC_Hackathon.jpg";
 import Deloitte from "../assets/Deloitte.png";
-import resumePDF from "../assets/shandeep (3).pdf";
+import resumePDF from "../assets/shandeep (Resume).pdf";
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowDown, FaFacebook, FaTwitter, FaInstagram, FaJava, FaReact, FaNodeJs, FaDocker, FaGit, FaAws, FaLinux, FaHtml5, FaCss3Alt, FaDatabase, FaTools, FaTrophy, FaMedal, FaAward, FaUsers } from "react-icons/fa";
 import { SiCplusplus, SiPhp, SiJavascript, SiExpress, SiMongodb, SiMysql, SiFlutter, SiFirebase, SiBootstrap, SiAndroidstudio } from "react-icons/si";
 import Slider from "react-slick";
@@ -65,7 +65,7 @@ function Home() {
     e.preventDefault();
     const link = document.createElement('a');
     link.href = resumePDF;
-    link.download = 'Shandeep_Sugumar_CV.pdf';
+    link.download = 'shandeep (Resume).pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -190,7 +190,7 @@ function Home() {
                         </div>
                         <div className="about-actions">
                           <a href="#contact" className="about-btn primary">Contact Me</a>
-                          <a href={resumePDF} onClick={handleDownloadCV} className="about-btn ghost" download="Shandeep_Sugumar_CV.pdf">Download CV</a>
+                          <a href={resumePDF} onClick={handleDownloadCV} className="about-btn ghost" download="shandeep (Resume).pdf">Download CV</a>
                         </div>
                       </div>
                     )}
