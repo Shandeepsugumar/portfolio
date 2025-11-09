@@ -3,6 +3,8 @@ import profileImg from "../assets/portfolio_welcome_page.jpg";
 import profileImg2 from "../assets/formal_pic.jpg";
 import OCPJSE17 from "../assets/OCPJSE17.jpg";
 import APEX24CDOCP from "../assets/APEX24CDOCP.jpg";
+import OCI25GAIOCP from "../assets/OCI25GAIOCP.jpg";
+import Oracle_Gen_AI from "../assets/Oracle_Gen_AI.png";
 import JAVASE17 from "../assets/JAVASE17.png";
 import APEX from "../assets/APEX.png";
 import NVIDIA from "../assets/NVIDIA.png";
@@ -829,6 +831,16 @@ function Home() {
               fullImage: APEX,
               type: 'Professional Certification',
               year: '2024',
+            },
+            { 
+              id: 'c6', 
+              title: 'Oracle Cloud Infrastructure 2025 Certified Generative AI Professional', 
+              issuer: 'Oracle', 
+              category: 'oracle',
+              thumbnail: OCI25GAIOCP,
+              fullImage: Oracle_Gen_AI,
+              type: 'Professional Certification',
+              year: '2025',
             },
             { 
               id: 'c3', 
