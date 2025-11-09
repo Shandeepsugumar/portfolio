@@ -5,15 +5,15 @@ import {Routes, Route} from "react-router-dom";
 import NavBar from './components/NavBar.jsx';
 
 function App() {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
     const saved = localStorage.getItem('theme');
     if (saved === 'dark' || saved === 'light') {
       setTheme(saved);
     } else {
-      setTheme('light');
-      localStorage.setItem('theme', 'light');
+      setTheme('dark');
+      localStorage.setItem('theme', 'dark');
     }
   }, []);
 
