@@ -10,21 +10,35 @@ const EMAIL_PASS = process.env.EMAIL_PASS;
 const EMAIL_TO = process.env.EMAIL_TO || EMAIL_USER;
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').map(o => o.trim()).filter(Boolean);
 const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
-const SMTP_PORT = Number(process.env.SMTP_PORT || 465);
-const SMTP_SECURE = (process.env.SMTP_SECURE || 'true').toLowerCase() === 'true';
+const SMTP_PORT = Number(process.env.SMTP_PORT || 587);
+const SMTP_SECURE = (process.env.SMTP_SECURE || 'false').toLowerCase() === 'true';
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || ALLOWED_ORIGINS.length === 0 || ALLOWED_ORIGINS.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) {
+        return callback(null, true);
       }
+      // If ALLOWED_ORIGINS is not set, allow all origins (for development)
+      if (ALLOWED_ORIGINS.length === 0) {
+        return callback(null, true);
+      }
+      // Check if the origin is in the allowed list
+      if (ALLOWED_ORIGINS.includes(origin)) {
+        return callback(null, true);
+      }
+      callback(new Error('Not allowed by CORS'));
     },
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 app.use(express.json());
+
+// Handle preflight requests explicitly
+app.options('*', cors());
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
@@ -45,7 +59,7 @@ app.post('/api/contact', async (req, res) => {
   const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
     port: SMTP_PORT,
-    secure: SMTP_SECURE,
+    secure: SMTP_SECURE, // true for 465, false for other ports
     auth: {
       user: EMAIL_USER,
       pass: EMAIL_PASS,
@@ -53,7 +67,11 @@ app.post('/api/contact', async (req, res) => {
     tls: {
       rejectUnauthorized: false,
     },
-    connectionTimeout: Number(process.env.SMTP_TIMEOUT || 10_000),
+    connectionTimeout: Number(process.env.SMTP_TIMEOUT || 30_000), // 30 seconds
+    greetingTimeout: 30_000,
+    socketTimeout: 30_000,
+    debug: process.env.NODE_ENV === 'development',
+    logger: process.env.NODE_ENV === 'development',
   });
 
   const mailToMe = {
