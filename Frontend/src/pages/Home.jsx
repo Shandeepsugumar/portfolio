@@ -46,7 +46,7 @@ function Home() {
       message: e.target.message.value,
     };
     try {
-      const response = await fetch('https://portfolio-915c.onrender.com/api/contact', {
+      const response = await fetch('https://portfolio-8etq.onrender.com/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
