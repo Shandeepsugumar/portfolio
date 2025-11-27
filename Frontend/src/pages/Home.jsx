@@ -1255,26 +1255,7 @@ function Home() {
 
       {/* Contact Section */}
       <section id="contact" className="contact-section contact-modern">
-        <div
-          className="contact-card innovative-contact-card"
-          onMouseMove={(e) => {
-            const card = e.currentTarget;
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = (y - centerY) / 15;
-            const rotateY = (centerX - x) / 15;
-            card.style.setProperty('--mouse-x', `${rotateY}deg`);
-            card.style.setProperty('--mouse-y', `${rotateX}deg`);
-          }}
-          onMouseLeave={(e) => {
-            const card = e.currentTarget;
-            card.style.setProperty('--mouse-x', '0deg');
-            card.style.setProperty('--mouse-y', '0deg');
-          }}
-        >
+        <div className="contact-card innovative-contact-card">
           <div className="innovative-contact-glow"></div>
           <div className="contact-modern-container">
             {/* Left Side: Info */}
