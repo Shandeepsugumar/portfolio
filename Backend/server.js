@@ -1,6 +1,7 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const { Resend } = require('resend');
 require('dotenv').config();
 
 const app = express();
@@ -12,6 +13,10 @@ const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').map(o => 
 const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
 const SMTP_PORT = Number(process.env.SMTP_PORT || 587);
 const SMTP_SECURE = (process.env.SMTP_SECURE || 'false').toLowerCase() === 'true';
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const RESEND_FROM = process.env.RESEND_FROM || 'Portfolio Bot <onboarding@resend.dev>';
+const resendClient = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
+const EMAIL_FROM_NAME = process.env.EMAIL_FROM_NAME || 'Portfolio Contact';
 
 app.use(
   cors({
@@ -47,51 +52,69 @@ app.get('/api/health', (req, res) => {
 app.post('/api/contact', async (req, res) => {
   const { from_name, from_email, subject, message } = req.body;
 
-  if (!EMAIL_USER || !EMAIL_PASS || !EMAIL_TO) {
-    console.error('Missing email credentials. Ensure EMAIL_USER, EMAIL_PASS, and EMAIL_TO are set.');
-    return res.status(500).json({ success: false, error: 'Email service not configured.' });
-  }
-
   if (!from_name || !from_email || !subject || !message) {
     return res.status(400).json({ success: false, error: 'All fields are required.' });
   }
 
-  const transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: SMTP_PORT,
-    secure: SMTP_SECURE, // true for 465, false for other ports
-    auth: {
-      user: EMAIL_USER,
-      pass: EMAIL_PASS,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-    connectionTimeout: Number(process.env.SMTP_TIMEOUT || 30_000), // 30 seconds
-    greetingTimeout: 30_000,
-    socketTimeout: 30_000,
-    debug: process.env.NODE_ENV === 'development',
-    logger: process.env.NODE_ENV === 'development',
-  });
-
-  const mailToMe = {
-    from: EMAIL_USER,
-    replyTo: from_email,
-    to: EMAIL_TO,
-    subject: `Portfolio Contact: ${subject}`,
-    text: `From: ${from_name} <${from_email}>\n\n${message}`,
-  };
-
-  const mailToUser = {
-    from: EMAIL_USER,
-    to: from_email,
-    subject: 'Thank you for contacting me!',
-    text: `Hi ${from_name},\n\nThank you for reaching out! I have received your message and will get back to you soon.\n\nYour message:\n${message}\n\nBest regards,\nShandeep`,
-  };
+  const mailSubject = `Portfolio Contact: ${subject}`;
+  const mailBody = `From: ${from_name} <${from_email}>\n\n${message}`;
+  const autoReplyBody = `Hi ${from_name},\n\nThank you for contacting me! I have received your message and will review it carefully. I will get back to you as quickly as possible.\n\nYour message:\n${message}\n\nBest regards,\nShandeep`;
 
   try {
-    await transporter.sendMail(mailToMe);
-    await transporter.sendMail(mailToUser);
+    if (resendClient) {
+      await resendClient.emails.send({
+        from: RESEND_FROM,
+        to: EMAIL_TO,
+        replyTo: from_email,
+        subject: mailSubject,
+        text: mailBody,
+      });
+
+      await resendClient.emails.send({
+        to: from_email,
+        subject: `Thank you for contacting ${EMAIL_FROM_NAME}`,
+        text: autoReplyBody,
+      });
+    } else {
+      if (!EMAIL_USER || !EMAIL_PASS || !EMAIL_TO) {
+        console.error('Missing email credentials. Ensure EMAIL_USER, EMAIL_PASS, and EMAIL_TO are set.');
+        return res.status(500).json({ success: false, error: 'Email service not configured.' });
+      }
+
+      const transporter = nodemailer.createTransport({
+        host: SMTP_HOST,
+        port: SMTP_PORT,
+        secure: SMTP_SECURE, // true for 465, false for other ports
+        auth: {
+          user: EMAIL_USER,
+          pass: EMAIL_PASS,
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+        connectionTimeout: Number(process.env.SMTP_TIMEOUT || 30_000), // 30 seconds
+        greetingTimeout: 30_000,
+        socketTimeout: 30_000,
+        debug: process.env.NODE_ENV === 'development',
+        logger: process.env.NODE_ENV === 'development',
+      });
+
+      await transporter.sendMail({
+        from: `${EMAIL_FROM_NAME} <${EMAIL_USER}>`,
+        replyTo: from_email,
+        to: EMAIL_TO,
+        subject: mailSubject,
+        text: mailBody,
+      });
+
+      await transporter.sendMail({
+        from: `${EMAIL_FROM_NAME} <${EMAIL_USER}>`,
+        to: from_email,
+        subject: `Thank you for contacting ${EMAIL_FROM_NAME}`,
+        text: autoReplyBody,
+      });
+    }
+
     res.status(200).json({ success: true });
   } catch (err) {
     console.error('Error sending email:', err);

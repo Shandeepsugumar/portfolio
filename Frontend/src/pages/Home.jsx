@@ -46,7 +46,8 @@ function Home() {
       message: e.target.message.value,
     };
     try {
-      const response = await fetch('https://portfolio-8etq.onrender.com/api/contact', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -90,7 +91,7 @@ function Home() {
           <div className="hero-left">
             <h1 className="hero-name-main">SHANDEEP</h1>
             <h2 className="hero-title-main">Software Developer</h2>
-            <p className="hero-intro">I create beautiful and interactive websites with modern technologies.<br/>Welcome to my portfolio!</p>
+            <p className="hero-intro">I create beautiful and interactive websites with modern technologies.<br />Welcome to my portfolio!</p>
             <div className="hero-socials">
               <a href="https://github.com/ShandeepSugumar" target="_blank" rel="noopener noreferrer" className="hero-social-icon facebook"><FaGithub /></a>
               <a href="https://linkedin.com/in/shandeep-sugumar-bb5203220" target="_blank" rel="noopener noreferrer" className="hero-social-icon linkedin"><FaLinkedin /></a>
@@ -101,7 +102,7 @@ function Home() {
             </div>
           </div>
           <div className="hero-img-wrapper">
-            <div 
+            <div
               className="hero-profile-img-container innovative-profile-card"
               onMouseMove={(e) => {
                 const card = e.currentTarget;
@@ -129,7 +130,7 @@ function Home() {
       </section>
       {/* About Section */}
       <section id="about" className="about-section">
-        <div 
+        <div
           className="about-card-modern innovative-about-card"
           onMouseMove={(e) => {
             const card = e.currentTarget;
@@ -321,7 +322,7 @@ function Home() {
                     card.style.setProperty('--mouse-x', `${rotateY}deg`);
                     card.style.setProperty('--mouse-y', `${rotateX}deg`);
                   };
-                  
+
                   const handleMouseLeave = (e) => {
                     const card = e.currentTarget;
                     card.style.setProperty('--mouse-x', '0deg');
@@ -329,11 +330,11 @@ function Home() {
                   };
 
                   return (
-                    <div 
+                    <div
                       className="skill-key innovative-skill-card"
                       key={skill.name}
                       title={skill.name}
-                      style={{ 
+                      style={{
                         '--skill-color': skill.color,
                         '--card-index': index
                       }}
@@ -488,7 +489,7 @@ function Home() {
           const [showFeatured, setShowFeatured] = useState(false);
           const projectsGridRef = useRef(null);
           const [currentScrollIndex, setCurrentScrollIndex] = useState(0);
-          
+
           // Ref callback to ensure scroll starts at 0
           const setGridRef = (element) => {
             projectsGridRef.current = element;
@@ -506,16 +507,16 @@ function Home() {
           // Dynamically set card widths to ensure exactly 2 cards fit
           useEffect(() => {
             if (filtered.length < 3) return; // Only for scrollable grids
-            
+
             const grid = projectsGridRef.current;
             if (!grid) return;
-            
+
             const updateCardWidths = () => {
               const containerWidth = grid.clientWidth;
               const gap = 16; // 1rem = 16px (matches CSS gap)
               // Use 48% of container width per card instead of 50% for better fit
               const cardWidth = (containerWidth * 0.48) - (gap / 2);
-              
+
               const cards = grid.querySelectorAll('.project-card');
               cards.forEach((card) => {
                 card.style.width = `${cardWidth}px`;
@@ -524,16 +525,16 @@ function Home() {
                 card.style.flexBasis = `${cardWidth}px`;
               });
             };
-            
+
             // Update on mount and resize
             updateCardWidths();
-            
+
             const resizeObserver = new ResizeObserver(updateCardWidths);
             resizeObserver.observe(grid);
-            
+
             // Also update after a short delay to ensure DOM is ready
             const timeoutId = setTimeout(updateCardWidths, 100);
-            
+
             return () => {
               resizeObserver.disconnect();
               clearTimeout(timeoutId);
@@ -545,7 +546,7 @@ function Home() {
           useEffect(() => {
             const grid = projectsGridRef.current;
             if (!grid) return;
-            
+
             // Force scroll to 0 immediately and multiple times to ensure it sticks
             const resetScroll = () => {
               if (grid) {
@@ -554,15 +555,15 @@ function Home() {
                 setCurrentScrollIndex(0);
               }
             };
-            
+
             // Reset immediately
             resetScroll();
-            
+
             // Reset on next frame
             requestAnimationFrame(() => {
               resetScroll();
             });
-            
+
             // Reset after multiple delays to ensure DOM is ready and cards are rendered
             const timeoutId1 = setTimeout(resetScroll, 50);
             const timeoutId2 = setTimeout(resetScroll, 150);
@@ -570,7 +571,7 @@ function Home() {
             const timeoutId4 = setTimeout(resetScroll, 500);
             const timeoutId5 = setTimeout(resetScroll, 800);
             const timeoutId6 = setTimeout(resetScroll, 1000);
-            
+
             // Use MutationObserver to reset scroll when DOM changes (debounced)
             let resetTimeout;
             const observer = new MutationObserver(() => {
@@ -579,9 +580,9 @@ function Home() {
                 resetScroll();
               }, 100);
             });
-            
+
             observer.observe(grid, { childList: true });
-            
+
             return () => {
               clearTimeout(timeoutId1);
               clearTimeout(timeoutId2);
@@ -601,7 +602,7 @@ function Home() {
           useEffect(() => {
             if (projectsGridRef.current) {
               const grid = projectsGridRef.current;
-              
+
               // Reset immediately
               const resetScroll = () => {
                 if (grid) {
@@ -610,21 +611,21 @@ function Home() {
                   setCurrentScrollIndex(0);
                 }
               };
-              
+
               resetScroll();
-              
+
               // Use requestAnimationFrame to ensure DOM is ready
               requestAnimationFrame(() => {
                 resetScroll();
               });
-              
+
               // Multiple attempts to ensure scroll is reset after cards render
               const timeoutId1 = setTimeout(resetScroll, 100);
               const timeoutId2 = setTimeout(resetScroll, 300);
               const timeoutId3 = setTimeout(resetScroll, 500);
               const timeoutId4 = setTimeout(resetScroll, 800);
               const timeoutId5 = setTimeout(resetScroll, 1000);
-              
+
               return () => {
                 clearTimeout(timeoutId1);
                 clearTimeout(timeoutId2);
@@ -638,22 +639,22 @@ function Home() {
           const handlePrev = () => {
             const grid = projectsGridRef.current;
             if (!grid) return;
-            
+
             const firstCard = grid.querySelector('.project-card');
             if (!firstCard) return;
-            
+
             const cardWidth = firstCard.offsetWidth;
             const gap = 16; // 1rem = 16px (matches CSS gap)
             const scrollAmount = cardWidth + gap;
-            
+
             // Calculate max scroll position
             const maxScroll = grid.scrollWidth - grid.clientWidth;
             const currentScroll = grid.scrollLeft;
-            
+
             // Move back by one card width
             const newScroll = Math.max(0, currentScroll - scrollAmount);
             grid.scrollTo({ left: newScroll, behavior: 'smooth' });
-            
+
             // Update index based on scroll position
             const newIndex = Math.round(newScroll / scrollAmount);
             setCurrentScrollIndex(newIndex);
@@ -662,22 +663,22 @@ function Home() {
           const handleNext = () => {
             const grid = projectsGridRef.current;
             if (!grid) return;
-            
+
             const firstCard = grid.querySelector('.project-card');
             if (!firstCard) return;
-            
+
             const cardWidth = firstCard.offsetWidth;
             const gap = 16; // 1rem = 16px (matches CSS gap)
             const scrollAmount = cardWidth + gap;
-            
+
             // Calculate max scroll position
             const maxScroll = grid.scrollWidth - grid.clientWidth;
             const currentScroll = grid.scrollLeft;
-            
+
             // Move forward by one card width
             const newScroll = Math.min(maxScroll, currentScroll + scrollAmount);
             grid.scrollTo({ left: newScroll, behavior: 'smooth' });
-            
+
             // Update index based on scroll position
             const newIndex = Math.round(newScroll / scrollAmount);
             setCurrentScrollIndex(newIndex);
@@ -714,7 +715,7 @@ function Home() {
 
               <div className="projects-grid-wrapper">
                 {showNavigation && (
-                  <button 
+                  <button
                     className="projects-nav-btn projects-nav-prev"
                     onClick={handlePrev}
                     aria-label="Previous projects"
@@ -722,7 +723,7 @@ function Home() {
                     ‹
                   </button>
                 )}
-                <div 
+                <div
                   className={`projects-grid${filtered.length >= 3 ? ' projects-grid-scroll' : ''}${activeCategory === 'Mobile' ? ' mobile-apps-grid' : ' innovative-projects-grid'}`}
                   ref={setGridRef}
                 >
@@ -742,18 +743,18 @@ function Home() {
                         card.style.setProperty('--mouse-x', `${rotateY}deg`);
                         card.style.setProperty('--mouse-y', `${rotateX}deg`);
                       };
-                      
+
                       const handleMouseLeave = (e) => {
                         const card = e.currentTarget;
                         card.style.setProperty('--mouse-x', '0deg');
                         card.style.setProperty('--mouse-y', '0deg');
                       };
-                      
+
                       return (
-                        <div 
-                          className={`project-card project-card-neo${activeCategory === 'Mobile' ? ' mobile-app-card' : ' innovative-project-card'}`} 
+                        <div
+                          className={`project-card project-card-neo${activeCategory === 'Mobile' ? ' mobile-app-card' : ' innovative-project-card'}`}
                           key={p.id}
-                          style={{'--card-index': index}}
+                          style={{ '--card-index': index }}
                           onMouseMove={handleMouseMove}
                           onMouseLeave={handleMouseLeave}
                         >
@@ -775,7 +776,7 @@ function Home() {
                           <div className="project-btn-row">
                             {p.hrefs.map((h) => (
                               <a key={h.href} href={h.href} target="_blank" rel="noopener noreferrer" className={`project-btn${h.live ? ' live-demo-btn' : ''}`}>
-                                {h.live ? (<><span role="img" aria-label="rocket" style={{marginRight: '8px'}}>🚀</span>Live Demo</>) : h.label}
+                                {h.live ? (<><span role="img" aria-label="rocket" style={{ marginRight: '8px' }}>🚀</span>Live Demo</>) : h.label}
                               </a>
                             ))}
                           </div>
@@ -785,7 +786,7 @@ function Home() {
                   )}
                 </div>
                 {showNavigation && (
-                  <button 
+                  <button
                     className="projects-nav-btn projects-nav-next"
                     onClick={handleNext}
                     aria-label="Next projects"
@@ -812,60 +813,60 @@ function Home() {
           ];
 
           const allCertificates = [
-            { 
-              id: 'c1', 
-              title: 'Oracle Certified Java SE 17 Developer', 
-              issuer: 'Oracle', 
+            {
+              id: 'c1',
+              title: 'Oracle Certified Java SE 17 Developer',
+              issuer: 'Oracle',
               category: 'oracle',
               thumbnail: OCPJSE17,
               fullImage: JAVASE17,
               type: 'Professional Certification',
               year: '2024',
             },
-            { 
-              id: 'c2', 
-              title: 'Oracle Certified APEX Cloud Developer', 
-              issuer: 'Oracle', 
+            {
+              id: 'c2',
+              title: 'Oracle Certified APEX Cloud Developer',
+              issuer: 'Oracle',
               category: 'oracle',
               thumbnail: APEX24CDOCP,
               fullImage: APEX,
               type: 'Professional Certification',
               year: '2024',
             },
-            { 
-              id: 'c6', 
-              title: 'Oracle Cloud Infrastructure 2025 Certified Generative AI Professional', 
-              issuer: 'Oracle', 
+            {
+              id: 'c6',
+              title: 'Oracle Cloud Infrastructure 2025 Certified Generative AI Professional',
+              issuer: 'Oracle',
               category: 'oracle',
               thumbnail: OCI25GAIOCP,
               fullImage: Oracle_Gen_AI,
               type: 'Professional Certification',
               year: '2025',
             },
-            { 
-              id: 'c3', 
-              title: 'Fundamentals of Deep Learning', 
-              issuer: 'NVIDIA', 
+            {
+              id: 'c3',
+              title: 'Fundamentals of Deep Learning',
+              issuer: 'NVIDIA',
               category: 'nvidia',
               thumbnail: NVIDIA,
               fullImage: NVIDIA,
               type: 'Course Completion',
               year: '2024',
             },
-            { 
-              id: 'c4', 
-              title: 'Technology Job Simulation', 
-              issuer: 'Deloitte', 
+            {
+              id: 'c4',
+              title: 'Technology Job Simulation',
+              issuer: 'Deloitte',
               category: 'deloitte',
               thumbnail: Deloitte,
               fullImage: Deloitte,
               type: 'Job Simulation',
               year: '2024',
             },
-            { 
-              id: 'c5', 
-              title: 'Web Development Internship', 
-              issuer: 'CoderOne', 
+            {
+              id: 'c5',
+              title: 'Web Development Internship',
+              issuer: 'CoderOne',
               category: 'other',
               thumbnail: intership,
               fullImage: intership,
@@ -881,8 +882,8 @@ function Home() {
 
           const filteredCerts = allCertificates.filter(c => {
             const matchesCategory = activeCertCategory === 'all' || c.category === activeCertCategory;
-            const matchesSearch = c.title.toLowerCase().includes(certSearchQuery.toLowerCase()) || 
-                                 c.issuer.toLowerCase().includes(certSearchQuery.toLowerCase());
+            const matchesSearch = c.title.toLowerCase().includes(certSearchQuery.toLowerCase()) ||
+              c.issuer.toLowerCase().includes(certSearchQuery.toLowerCase());
             return matchesCategory && matchesSearch;
           });
 
@@ -891,19 +892,19 @@ function Home() {
           const handleCertPrev = () => {
             const grid = certificatesGridRef.current;
             if (!grid) return;
-            
+
             const firstCard = grid.querySelector('.certificate-card-modern');
             if (!firstCard) return;
-            
+
             const cardWidth = firstCard.offsetWidth;
             const gap = 24; // 1.5rem = 24px
             const scrollAmount = cardWidth + gap;
-            
+
             const maxScroll = grid.scrollWidth - grid.clientWidth;
             const currentScroll = grid.scrollLeft;
             const newScroll = Math.max(0, currentScroll - scrollAmount);
             grid.scrollTo({ left: newScroll, behavior: 'smooth' });
-            
+
             const newIndex = Math.round(newScroll / scrollAmount);
             setCurrentCertScrollIndex(newIndex);
           };
@@ -911,19 +912,19 @@ function Home() {
           const handleCertNext = () => {
             const grid = certificatesGridRef.current;
             if (!grid) return;
-            
+
             const firstCard = grid.querySelector('.certificate-card-modern');
             if (!firstCard) return;
-            
+
             const cardWidth = firstCard.offsetWidth;
             const gap = 24; // 1.5rem = 24px
             const scrollAmount = cardWidth + gap;
-            
+
             const maxScroll = grid.scrollWidth - grid.clientWidth;
             const currentScroll = grid.scrollLeft;
             const newScroll = Math.min(maxScroll, currentScroll + scrollAmount);
             grid.scrollTo({ left: newScroll, behavior: 'smooth' });
-            
+
             const newIndex = Math.round(newScroll / scrollAmount);
             setCurrentCertScrollIndex(newIndex);
           };
@@ -966,7 +967,7 @@ function Home() {
 
               <div className="certificates-grid-wrapper">
                 {showCertNavigation && (
-                  <button 
+                  <button
                     className="certificates-nav-btn certificates-nav-prev"
                     onClick={handleCertPrev}
                     aria-label="Previous certificates"
@@ -974,7 +975,7 @@ function Home() {
                     ‹
                   </button>
                 )}
-                <div 
+                <div
                   className={`certificates-grid${filteredCerts.length >= 3 ? ' certificates-grid-scroll' : ''} innovative-certificates-grid`}
                   ref={certificatesGridRef}
                 >
@@ -991,7 +992,7 @@ function Home() {
                       card.style.setProperty('--mouse-x', `${rotateY}deg`);
                       card.style.setProperty('--mouse-y', `${rotateX}deg`);
                     };
-                    
+
                     const handleMouseLeave = (e) => {
                       const card = e.currentTarget;
                       card.style.setProperty('--mouse-x', '0deg');
@@ -999,10 +1000,10 @@ function Home() {
                     };
 
                     return (
-                      <div 
+                      <div
                         className="certificate-card-modern innovative-certificate-card"
                         key={cert.id}
-                        style={{'--card-index': index}}
+                        style={{ '--card-index': index }}
                         onMouseMove={handleMouseMove}
                         onMouseLeave={handleMouseLeave}
                       >
@@ -1010,8 +1011,8 @@ function Home() {
                         <div className="certificate-card-image-wrapper">
                           <img src={cert.thumbnail} alt={cert.title} className="certificate-card-img" />
                           <div className="certificate-card-overlay">
-                            <button 
-                              className="certificate-view-btn" 
+                            <button
+                              className="certificate-view-btn"
                               onClick={() => { setModalImg(cert.fullImage); setModalOpen(true); }}
                             >
                               <span>👁️</span> View Full
@@ -1031,7 +1032,7 @@ function Home() {
                   })}
                 </div>
                 {showCertNavigation && (
-                  <button 
+                  <button
                     className="certificates-nav-btn certificates-nav-next"
                     onClick={handleCertNext}
                     aria-label="Next certificates"
@@ -1058,9 +1059,9 @@ function Home() {
           ];
 
           const allAchievements = [
-            { 
-              id: 'a1', 
-              title: 'KEC Hackathon Winner', 
+            {
+              id: 'a1',
+              title: 'KEC Hackathon Winner',
               description: 'Secured 2nd place at the KEC Hackathon for delivering a high-impact solution with strong problem solving, teamwork, and end to end implementation.',
               type: 'hackathon',
               category: 'hackathon',
@@ -1078,8 +1079,8 @@ function Home() {
 
           const filteredAchievements = allAchievements.filter(a => {
             const matchesType = activeAchievementType === 'all' || a.category === activeAchievementType;
-            const matchesSearch = a.title.toLowerCase().includes(achievementSearchQuery.toLowerCase()) || 
-                                 a.description.toLowerCase().includes(achievementSearchQuery.toLowerCase());
+            const matchesSearch = a.title.toLowerCase().includes(achievementSearchQuery.toLowerCase()) ||
+              a.description.toLowerCase().includes(achievementSearchQuery.toLowerCase());
             return matchesType && matchesSearch;
           });
 
@@ -1088,19 +1089,19 @@ function Home() {
           const handleAchievementPrev = () => {
             const grid = achievementsGridRef.current;
             if (!grid) return;
-            
+
             const firstCard = grid.querySelector('.achievement-card-modern');
             if (!firstCard) return;
-            
+
             const cardWidth = firstCard.offsetWidth;
             const gap = 24; // 1.5rem = 24px
             const scrollAmount = cardWidth + gap;
-            
+
             const maxScroll = grid.scrollWidth - grid.clientWidth;
             const currentScroll = grid.scrollLeft;
             const newScroll = Math.max(0, currentScroll - scrollAmount);
             grid.scrollTo({ left: newScroll, behavior: 'smooth' });
-            
+
             const newIndex = Math.round(newScroll / scrollAmount);
             setCurrentAchievementScrollIndex(newIndex);
           };
@@ -1108,19 +1109,19 @@ function Home() {
           const handleAchievementNext = () => {
             const grid = achievementsGridRef.current;
             if (!grid) return;
-            
+
             const firstCard = grid.querySelector('.achievement-card-modern');
             if (!firstCard) return;
-            
+
             const cardWidth = firstCard.offsetWidth;
             const gap = 24; // 1.5rem = 24px
             const scrollAmount = cardWidth + gap;
-            
+
             const maxScroll = grid.scrollWidth - grid.clientWidth;
             const currentScroll = grid.scrollLeft;
             const newScroll = Math.min(maxScroll, currentScroll + scrollAmount);
             grid.scrollTo({ left: newScroll, behavior: 'smooth' });
-            
+
             const newIndex = Math.round(newScroll / scrollAmount);
             setCurrentAchievementScrollIndex(newIndex);
           };
@@ -1163,7 +1164,7 @@ function Home() {
 
               <div className="achievements-grid-wrapper">
                 {showAchievementNavigation && (
-                  <button 
+                  <button
                     className="achievements-nav-btn achievements-nav-prev"
                     onClick={handleAchievementPrev}
                     aria-label="Previous achievements"
@@ -1171,7 +1172,7 @@ function Home() {
                     ‹
                   </button>
                 )}
-                <div 
+                <div
                   className={`achievements-grid${filteredAchievements.length >= 3 ? ' achievements-grid-scroll' : ''} innovative-achievements-grid`}
                   ref={achievementsGridRef}
                 >
@@ -1191,7 +1192,7 @@ function Home() {
                         card.style.setProperty('--mouse-x', `${rotateY}deg`);
                         card.style.setProperty('--mouse-y', `${rotateX}deg`);
                       };
-                      
+
                       const handleMouseLeave = (e) => {
                         const card = e.currentTarget;
                         card.style.setProperty('--mouse-x', '0deg');
@@ -1199,10 +1200,10 @@ function Home() {
                       };
 
                       return (
-                        <div 
+                        <div
                           className="achievement-card-modern innovative-achievement-card"
                           key={achievement.id}
-                          style={{'--card-index': index}}
+                          style={{ '--card-index': index }}
                           onMouseMove={handleMouseMove}
                           onMouseLeave={handleMouseLeave}
                         >
@@ -1217,8 +1218,8 @@ function Home() {
                           <div className="achievement-card-image-wrapper">
                             <img src={achievement.image} alt={achievement.title} className="achievement-card-img" />
                             <div className="achievement-card-overlay">
-                              <button 
-                                className="achievement-view-btn" 
+                              <button
+                                className="achievement-view-btn"
                                 onClick={() => { setModalImg(achievement.image); setModalOpen(true); }}
                               >
                                 <span>👁️</span> View
@@ -1238,7 +1239,7 @@ function Home() {
                   )}
                 </div>
                 {showAchievementNavigation && (
-                  <button 
+                  <button
                     className="achievements-nav-btn achievements-nav-next"
                     onClick={handleAchievementNext}
                     aria-label="Next achievements"
@@ -1254,7 +1255,7 @@ function Home() {
 
       {/* Contact Section */}
       <section id="contact" className="contact-section contact-modern">
-        <div 
+        <div
           className="contact-card innovative-contact-card"
           onMouseMove={(e) => {
             const card = e.currentTarget;
