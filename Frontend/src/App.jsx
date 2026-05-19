@@ -26,17 +26,14 @@ function App() {
   };
 
   return (
-    <>
-      <div className={theme === 'light' ? 'theme-light' : 'theme-dark'}>
+    <div className={theme === 'light' ? 'theme-light' : 'theme-dark'}>
       <NavBar theme={theme} onToggleTheme={toggleTheme} />
       <main>
         <Routes>
-          <Route path="/" element={<Home />}>
-          </Route>
+          <Route path="/" element={<Home />} />
         </Routes>
       </main>
-      </div>
-    </>
+    </div>
   )
 }
 

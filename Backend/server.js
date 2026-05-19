@@ -71,6 +71,7 @@ app.post('/api/contact', async (req, res) => {
       });
 
       await resendClient.emails.send({
+        from: RESEND_FROM,
         to: from_email,
         subject: `Thank you for contacting ${EMAIL_FROM_NAME}`,
         text: autoReplyBody,

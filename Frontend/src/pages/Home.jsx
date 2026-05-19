@@ -13,28 +13,121 @@ import KEC_Hackthon from "../assets/KEC_Hackathon.jpg";
 import Deloitte from "../assets/Deloitte.png";
 import resumePDF from "../assets/shandeep (Resume).pdf";
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowDown, FaFacebook, FaTwitter, FaInstagram, FaJava, FaReact, FaNodeJs, FaDocker, FaGit, FaAws, FaLinux, FaHtml5, FaCss3Alt, FaDatabase, FaTools, FaTrophy, FaMedal, FaAward, FaUsers } from "react-icons/fa";
-import { SiCplusplus, SiPhp, SiJavascript, SiExpress, SiMongodb, SiMysql, SiFlutter, SiFirebase, SiBootstrap, SiAndroidstudio } from "react-icons/si";
+import { SiCplusplus, SiPhp, SiJavascript, SiExpress, SiMongodb, SiMysql, SiFlutter, SiFirebase, SiBootstrap, SiAndroidstudio, SiPython, SiDart, SiVercel, SiRender, SiC } from "react-icons/si";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 function Home() {
-  const skillsRef = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImg, setModalImg] = useState(null);
+  const [splineVisible, setSplineVisible] = useState(false);
+  const skillsSectionRef = useRef(null);
+
+  // Lazy-load Spline viewer only when skills section is near the viewport
   useEffect(() => {
-    const handleScroll = () => {
-      if (!skillsRef.current) return;
-      const rect = skillsRef.current.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 100) {
-        skillsRef.current.classList.add('skill-bar-animate');
-        window.removeEventListener('scroll', handleScroll);
-      }
+    const section = skillsSectionRef.current;
+    if (!section) return;
+
+    let timeoutId;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          // Load the Spline viewer script
+          const existingScript = document.querySelector('script[src*="splinetool/viewer"]');
+          if (!existingScript) {
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.src = 'https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js';
+            document.head.appendChild(script);
+          }
+          // Small delay to let script register the custom element
+          timeoutId = setTimeout(() => {
+            setSplineVisible(true);
+          }, 500);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(section);
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
     };
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Hide "Built with Spline" watermark inside shadow DOM
+  useEffect(() => {
+    if (!splineVisible) return;
+
+    const hideSplineLogo = () => {
+      const viewer = document.querySelector('.spline-viewer-container spline-viewer');
+      if (!viewer?.shadowRoot) return false;
+
+      let found = false;
+
+      // Try #logo
+      const logo = viewer.shadowRoot.querySelector('#logo');
+      if (logo) {
+        logo.style.display = 'none';
+        found = true;
+      }
+
+      // Try any anchor linking to spline
+      const links = viewer.shadowRoot.querySelectorAll('a[href*="spline"]');
+      links.forEach(link => {
+        link.style.display = 'none';
+        found = true;
+      });
+
+      // Hide any div/element that looks like a watermark overlay
+      const allDivs = viewer.shadowRoot.querySelectorAll('div');
+      allDivs.forEach(div => {
+        if (div.textContent?.includes('Built with Spline') || div.textContent?.includes('Spline')) {
+          const style = window.getComputedStyle(div);
+          if (style.position === 'absolute' || style.position === 'fixed') {
+            div.style.display = 'none';
+            found = true;
+          }
+        }
+      });
+
+      // Inject a comprehensive style tag to hide the logo as fallback
+      if (!viewer.shadowRoot.querySelector('#hide-logo-style')) {
+        const style = document.createElement('style');
+        style.id = 'hide-logo-style';
+        style.textContent = `
+          #logo, a[href*="spline"], [id*="logo"], [class*="logo"],
+          [class*="watermark"], [id*="watermark"] {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            overflow: hidden !important;
+          }
+        `;
+        viewer.shadowRoot.appendChild(style);
+      }
+      return found;
+    };
+
+    // Try immediately and with retries
+    const intervalId = setInterval(() => {
+      if (hideSplineLogo()) clearInterval(intervalId);
+    }, 500);
+
+    // Stop trying after 30 seconds
+    const timeoutId = setTimeout(() => clearInterval(intervalId), 30000);
+
+    return () => {
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+    };
+  }, [splineVisible]);
 
   // Contact form handler for backend email
   const handleContactSubmit = async (e) => {
@@ -235,124 +328,79 @@ function Home() {
           </div>
         </div>
       </section>
-      {/* Skills Section */}
-      <section id="skills" className="skills-section">
+      {/* Skills Section - Split Layout */}
+      <section id="skills" className="skills-section skills-spline-section" ref={skillsSectionRef}>
         <h2 className="skills-title">Skills & Technologies</h2>
-        {(() => {
-          const skillCategories = [
-            { key: 'all', label: 'All Skills' },
-            { key: 'frontend', label: 'Frontend' },
-            { key: 'backend', label: 'Backend' },
-            { key: 'database', label: 'Database' },
-            { key: 'devops', label: 'DevOps' },
-            { key: 'mobile', label: 'Mobile' },
-            { key: 'tools', label: 'Tools' },
-          ];
-
-          const allSkills = [
-            { name: 'React', icon: <FaReact />, category: 'frontend', level: 90, color: '#61DAFB' },
-            { name: 'JavaScript', icon: <SiJavascript />, category: 'frontend', level: 88, color: '#F7DF1E' },
-            { name: 'HTML5', icon: <FaHtml5 />, category: 'frontend', level: 92, color: '#E34F26' },
-            { name: 'CSS3', icon: <FaCss3Alt />, category: 'frontend', level: 90, color: '#1572B6' },
-            { name: 'Bootstrap', icon: <SiBootstrap />, category: 'frontend', level: 85, color: '#7952B3' },
-            { name: 'Node.js', icon: <FaNodeJs />, category: 'backend', level: 85, color: '#3C873A' },
-            { name: 'Express', icon: <SiExpress />, category: 'backend', level: 82, color: '#000000' },
-            { name: 'Java', icon: <FaJava />, category: 'backend', level: 88, color: '#f89820' },
-            { name: 'PHP', icon: <SiPhp />, category: 'backend', level: 75, color: '#777BB4' },
-            { name: 'C++', icon: <SiCplusplus />, category: 'backend', level: 70, color: '#00599C' },
-            { name: 'MongoDB', icon: <SiMongodb />, category: 'database', level: 85, color: '#47A248' },
-            { name: 'MySQL', icon: <SiMysql />, category: 'database', level: 83, color: '#4479A1' },
-            { name: 'Firebase', icon: <SiFirebase />, category: 'database', level: 80, color: '#FFCA28' },
-            { name: 'Docker', icon: <FaDocker />, category: 'devops', level: 80, color: '#2496ED' },
-            { name: 'AWS', icon: <FaAws />, category: 'devops', level: 75, color: '#FF9900' },
-            { name: 'Linux', icon: <FaLinux />, category: 'devops', level: 82, color: '#FCC624' },
-            { name: 'Flutter', icon: <SiFlutter />, category: 'mobile', level: 85, color: '#02569B' },
-            { name: 'Android Studio', icon: <SiAndroidstudio />, category: 'mobile', level: 80, color: '#3DDC84' },
-            { name: 'Git', icon: <FaGit />, category: 'tools', level: 90, color: '#F05032' },
-          ];
-
-          const [activeCategory, setActiveCategory] = useState('all');
-          const [searchQuery, setSearchQuery] = useState('');
-
-          const filtered = allSkills.filter(s => {
-            const matchesCategory = activeCategory === 'all' || s.category === activeCategory;
-            const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase());
-            return matchesCategory && matchesSearch;
-          });
-
-          return (
-            <div className="skills-interactive">
-              <div className="skills-tabs" role="tablist" aria-label="Skill Categories">
-                {skillCategories.map((cat) => (
-                  <button
-                    key={cat.key}
-                    role="tab"
-                    aria-selected={activeCategory === cat.key}
-                    className={`skills-tab${activeCategory === cat.key ? ' active' : ''}`}
-                    onClick={() => setActiveCategory(cat.key)}
-                  >
-                    {cat.label}
-                  </button>
-                ))}
-                <span className="skills-tab-ink" data-active={activeCategory}></span>
-              </div>
-
-              <div className="skills-search-wrapper">
-                <input
-                  type="text"
-                  placeholder="Search skills..."
-                  className="skills-search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <span className="skills-count">{filtered.length} skill{filtered.length !== 1 ? 's' : ''}</span>
-              </div>
-
-              <div className="skills-keyboard innovative-skills-grid">
-                {filtered.map((skill, index) => {
-                  const handleMouseMove = (e) => {
-                    const card = e.currentTarget;
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / 10;
-                    const rotateY = (centerX - x) / 10;
-                    card.style.setProperty('--mouse-x', `${rotateY}deg`);
-                    card.style.setProperty('--mouse-y', `${rotateX}deg`);
-                  };
-
-                  const handleMouseLeave = (e) => {
-                    const card = e.currentTarget;
-                    card.style.setProperty('--mouse-x', '0deg');
-                    card.style.setProperty('--mouse-y', '0deg');
-                  };
-
-                  return (
-                    <div
-                      className="skill-key innovative-skill-card"
-                      key={skill.name}
-                      title={skill.name}
-                      style={{
-                        '--skill-color': skill.color,
-                        '--card-index': index
-                      }}
-                      onMouseMove={handleMouseMove}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <div className="innovative-skill-glow"></div>
-                      <div className="skill-key-icon" style={{ color: skill.color }}>
-                        {skill.icon}
-                      </div>
-                      <div className="skill-key-label">{skill.name}</div>
-                    </div>
-                  );
-                })}
+        <div className="skills-split-layout">
+          {/* Left Side - Skill Content */}
+          <div className="skills-content-left">
+            <div className="skills-category">
+              <h3 className="skills-category-title">
+                <FaReact className="skills-category-icon" /> Frontend
+              </h3>
+              <div className="skills-badges">
+                <span className="skill-badge"><FaReact /> React</span>
+                <span className="skill-badge"><FaHtml5 /> HTML5</span>
+                <span className="skill-badge"><FaCss3Alt /> CSS3</span>
+                <span className="skill-badge"><SiJavascript /> JavaScript</span>
+                <span className="skill-badge"><SiBootstrap /> Bootstrap</span>
+                <span className="skill-badge"><SiFlutter /> Flutter</span>
               </div>
             </div>
-          );
-        })()}
+            <div className="skills-category">
+              <h3 className="skills-category-title">
+                <FaNodeJs className="skills-category-icon" /> Backend
+              </h3>
+              <div className="skills-badges">
+                <span className="skill-badge"><FaJava /> Java</span>
+                <span className="skill-badge"><FaNodeJs /> Node.js</span>
+                <span className="skill-badge"><SiExpress /> Express</span>
+                <span className="skill-badge"><SiPython /> Python</span>
+                <span className="skill-badge"><SiC /> C</span>
+                <span className="skill-badge"><SiDart /> Dart</span>
+              </div>
+            </div>
+            <div className="skills-category">
+              <h3 className="skills-category-title">
+                <FaDatabase className="skills-category-icon" /> Database & Cloud
+              </h3>
+              <div className="skills-badges">
+                <span className="skill-badge"><SiMongodb /> MongoDB</span>
+                <span className="skill-badge"><SiMysql /> MySQL</span>
+                <span className="skill-badge"><SiFirebase /> Firebase</span>
+                <span className="skill-badge"><SiVercel /> Vercel</span>
+                <span className="skill-badge"><SiRender /> Render</span>
+              </div>
+            </div>
+            <div className="skills-category">
+              <h3 className="skills-category-title">
+                <FaTools className="skills-category-icon" /> DevOps & Tools
+              </h3>
+              <div className="skills-badges">
+                <span className="skill-badge"><FaDocker /> Docker</span>
+                <span className="skill-badge"><FaGit /> Git</span>
+                <span className="skill-badge"><FaLinux /> Linux</span>
+                <span className="skill-badge"><SiAndroidstudio /> Android Studio</span>
+              </div>
+            </div>
+          </div>
+          {/* Right Side - 3D Spline Viewer */}
+          <div className="skills-3d-right">
+            <div className="spline-viewer-container">
+              {splineVisible ? (
+                <spline-viewer
+                  url="https://prod.spline.design/cDW-eTFHIyP6iUfW/scene.splinecode"
+                  background="transparent"
+                ></spline-viewer>
+              ) : (
+                <div className="spline-loading-placeholder">
+                  <div className="spline-loading-spinner"></div>
+                  <p>Loading 3D Scene...</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </section>
       {/* Projects Section */}
       <section id="projects" className="projects-section">
@@ -437,6 +485,28 @@ function Home() {
             },
             {
               id: 'p6',
+              title: 'Brain Burst',
+              summary: 'Interactive quiz game platform with a clean web interface and live challenge flow.',
+              hrefs: [
+                { href: 'https://quize-game-platform.vercel.app', label: 'Live Demo', live: true },
+              ],
+              tags: ['React', 'Quiz', 'Web'],
+              category: 'Web',
+              featured: true,
+            },
+            {
+              id: 'p7',
+              title: 'ChatZero',
+              summary: 'AI-powered quiz platform with chat-integrated assistance, secure login, and live challenge rounds (visit /login).',
+              hrefs: [
+                { href: 'https://chatzero-ai.vercel.app/login', label: 'Live Demo', live: true },
+              ],
+              tags: ['React', 'Quiz', 'Web'],
+              category: 'Web',
+              featured: false,
+            },
+            {
+              id: 'p11',
               title: 'Mobile Shopping System (Java + JDBC)',
               summary: 'Console app demonstrating CRUD with MySQL using pure JDBC.',
               hrefs: [{ href: 'https://github.com/ShandeepSugumar/Java-JDBC.git', label: 'GitHub' }],
@@ -445,7 +515,7 @@ function Home() {
               featured: false,
             },
             {
-              id: 'p7',
+              id: 'p8',
               title: 'Ping Pong Game (JavaFX)',
               summary: 'Desktop arcade game with animation and collision detection.',
               hrefs: [{ href: 'https://github.com/ShandeepSugumar/Ping-Pong-Game-using-Java.git', label: 'GitHub' }],
@@ -454,7 +524,7 @@ function Home() {
               featured: true,
             },
             {
-              id: 'p11',
+              id: 'p12',
               title: 'EB Bill Calculation System',
               summary: 'Java application for calculating Electricity Board (EB) bills with HTML-based user interface and JDBC for database connectivity. Features automated bill calculation based on consumption units, user-friendly HTML interface for input and display, database integration for storing customer data and billing records, and efficient bill computation with different tariff rates.',
               hrefs: [{ href: 'https://github.com/Shandeepsugumar/EB_Bill_Calculation.git', label: 'GitHub' }],
@@ -463,7 +533,7 @@ function Home() {
               featured: false,
             },
             {
-              id: 'p8',
+              id: 'p13',
               title: 'CI/CD for Online Learning Platform',
               summary: 'Docker images, Jenkins pipelines, and Kubernetes manifests for automated deployments.',
               hrefs: [{ href: 'https://github.com/ShandeepSugumar/online-learning-platform.git', label: 'Repository' }],
@@ -472,13 +542,10 @@ function Home() {
               featured: true,
             },
             {
-              id: 'p12',
+              id: 'p14',
               title: 'Podcast App CI/CD Pipeline',
               summary: 'Complete CI/CD pipeline implementation for Podcast streaming application using Jenkins and Docker. Features automated build and deployment pipeline with Jenkinsfile, Docker containerization with Dockerfile, automated email notifications on pipeline triggers, localhost deployment using Docker images and containers, and seamless integration with MERN stack application for continuous integration and deployment.',
-              hrefs: [
-                { href: 'https://github.com/Shandeepsugumar/Podcast.git', label: 'GitHub' },
-                { href: 'https://podcast-orpin.vercel.app', label: 'Live Demo', live: true },
-              ],
+              hrefs: [{ href: 'https://podcast-orpin.vercel.app', label: 'Live Demo', live: true },],
               tags: ['Jenkins', 'Docker', 'CI/CD', 'DevOps', 'Pipeline'],
               category: 'DevOps',
               featured: true,
@@ -490,151 +557,38 @@ function Home() {
           const projectsGridRef = useRef(null);
           const [currentScrollIndex, setCurrentScrollIndex] = useState(0);
 
-          // Ref callback to ensure scroll starts at 0
           const setGridRef = (element) => {
             projectsGridRef.current = element;
-            if (element) {
-              element.scrollLeft = 0;
-              // Also set it after a microtask to ensure it sticks
-              setTimeout(() => {
-                if (element) element.scrollLeft = 0;
-              }, 0);
-            }
+            if (element) element.scrollLeft = 0;
           };
 
           const filtered = allProjects.filter(p => p.category === activeCategory && (!showFeatured || p.featured));
 
-          // Dynamically set card widths to ensure exactly 2 cards fit
-          useEffect(() => {
-            if (filtered.length < 3) return; // Only for scrollable grids
-
-            const grid = projectsGridRef.current;
-            if (!grid) return;
-
-            const updateCardWidths = () => {
-              const containerWidth = grid.clientWidth;
-              const gap = 16; // 1rem = 16px (matches CSS gap)
-              // Use 48% of container width per card instead of 50% for better fit
-              const cardWidth = (containerWidth * 0.48) - (gap / 2);
-
-              const cards = grid.querySelectorAll('.project-card');
-              cards.forEach((card) => {
-                card.style.width = `${cardWidth}px`;
-                card.style.minWidth = `${cardWidth}px`;
-                card.style.maxWidth = `${cardWidth}px`;
-                card.style.flexBasis = `${cardWidth}px`;
-              });
-            };
-
-            // Update on mount and resize
-            updateCardWidths();
-
-            const resizeObserver = new ResizeObserver(updateCardWidths);
-            resizeObserver.observe(grid);
-
-            // Also update after a short delay to ensure DOM is ready
-            const timeoutId = setTimeout(updateCardWidths, 100);
-
-            return () => {
-              resizeObserver.disconnect();
-              clearTimeout(timeoutId);
-            };
-          }, [filtered.length, activeCategory, showFeatured]);
-
-          // Ensure scroll starts at 0 on initial load and when cards change
-          // This ensures p1 and p2 are always shown by default
-          useEffect(() => {
-            const grid = projectsGridRef.current;
-            if (!grid) return;
-
-            // Force scroll to 0 immediately and multiple times to ensure it sticks
-            const resetScroll = () => {
-              if (grid) {
-                grid.scrollLeft = 0;
-                grid.scrollTo({ left: 0, behavior: 'instant' });
-                setCurrentScrollIndex(0);
-              }
-            };
-
-            // Reset immediately
-            resetScroll();
-
-            // Reset on next frame
-            requestAnimationFrame(() => {
-              resetScroll();
+        useEffect(() => {
+          if (filtered.length < 3) return;
+          const grid = projectsGridRef.current;
+          if (!grid) return;
+          const updateCardWidths = () => {
+            const containerWidth = grid.clientWidth;
+            const gap = 16;
+            const cardWidth = (containerWidth * 0.48) - (gap / 2);
+            const cards = grid.querySelectorAll('.project-card');
+            cards.forEach((card) => {
+              card.style.width = `${cardWidth}px`;
+              card.style.minWidth = `${cardWidth}px`;
+              card.style.maxWidth = `${cardWidth}px`;
+              card.style.flexBasis = `${cardWidth}px`;
             });
-
-            // Reset after multiple delays to ensure DOM is ready and cards are rendered
-            const timeoutId1 = setTimeout(resetScroll, 50);
-            const timeoutId2 = setTimeout(resetScroll, 150);
-            const timeoutId3 = setTimeout(resetScroll, 300);
-            const timeoutId4 = setTimeout(resetScroll, 500);
-            const timeoutId5 = setTimeout(resetScroll, 800);
-            const timeoutId6 = setTimeout(resetScroll, 1000);
-
-            // Use MutationObserver to reset scroll when DOM changes (debounced)
-            let resetTimeout;
-            const observer = new MutationObserver(() => {
-              clearTimeout(resetTimeout);
-              resetTimeout = setTimeout(() => {
-                resetScroll();
-              }, 100);
-            });
-
-            observer.observe(grid, { childList: true });
-
-            return () => {
-              clearTimeout(timeoutId1);
-              clearTimeout(timeoutId2);
-              clearTimeout(timeoutId3);
-              clearTimeout(timeoutId4);
-              clearTimeout(timeoutId5);
-              clearTimeout(timeoutId6);
-              clearTimeout(resetTimeout);
-              observer.disconnect();
-            };
-          }, [filtered.length, activeCategory, showFeatured]);
-
-          // Disable auto-scroll - user will control navigation manually
-          // Auto-scroll functionality disabled for manual control
-
-          // Reset scroll when category or filter changes
-          useEffect(() => {
-            if (projectsGridRef.current) {
-              const grid = projectsGridRef.current;
-
-              // Reset immediately
-              const resetScroll = () => {
-                if (grid) {
-                  grid.scrollLeft = 0;
-                  grid.scrollTo({ left: 0, behavior: 'instant' });
-                  setCurrentScrollIndex(0);
-                }
-              };
-
-              resetScroll();
-
-              // Use requestAnimationFrame to ensure DOM is ready
-              requestAnimationFrame(() => {
-                resetScroll();
-              });
-
-              // Multiple attempts to ensure scroll is reset after cards render
-              const timeoutId1 = setTimeout(resetScroll, 100);
-              const timeoutId2 = setTimeout(resetScroll, 300);
-              const timeoutId3 = setTimeout(resetScroll, 500);
-              const timeoutId4 = setTimeout(resetScroll, 800);
-              const timeoutId5 = setTimeout(resetScroll, 1000);
-
-              return () => {
-                clearTimeout(timeoutId1);
-                clearTimeout(timeoutId2);
-                clearTimeout(timeoutId3);
-                clearTimeout(timeoutId4);
-                clearTimeout(timeoutId5);
-              };
-            }
-          }, [activeCategory, showFeatured, filtered.length]);
+          };
+          updateCardWidths();
+          const resizeObserver = new ResizeObserver(updateCardWidths);
+          resizeObserver.observe(grid);
+          const timeoutId = setTimeout(updateCardWidths, 100);
+          return () => {
+            resizeObserver.disconnect();
+            clearTimeout(timeoutId);
+          };
+        }, [filtered.length, activeCategory, showFeatured]);
 
           const handlePrev = () => {
             const grid = projectsGridRef.current;

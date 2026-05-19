@@ -3,7 +3,7 @@
   width: 100%;
   max-width: 100vw;
   box-sizing: border-box;
-  background: rgba(24, 48, 90, 0.45);
+  background: rgba(26, 10, 46, 0.45);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1.5px solid rgba(255, 255, 255, 0.13);
@@ -11,7 +11,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.7rem 3vw;
-  box-shadow: 0 2px 16px rgba(24,90,219,0.12);
+  box-shadow: 0 2px 16px rgba(124,58,237,0.12);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -22,11 +22,11 @@
   gap: 0.7rem;
   font-size: 2rem;
   font-weight: bold;
-  color: #ffd54f;
+  color: #c084fc;
   letter-spacing: 2px;
 }
 .navbar-title {
-  color: #ffd54f;
+  color: #c084fc;
   font-weight: bold;
   font-size: 1.3rem;
   letter-spacing: 1.2px;
@@ -45,14 +45,14 @@
   transition: color 0.2s;
 }
 .nav-link:hover, .nav-link.active {
-  color: #ffd54f;
+  color: #c084fc;
 }
 .nav-link::after {
   content: '';
   display: block;
   width: 0;
   height: 2px;
-  background: #ffd54f;
+  background: #c084fc;
   border-radius: 2px;
   margin: 0.1rem auto 0 auto;
   transition: width 0.3s cubic-bezier(.68,-0.55,.27,1.55);
@@ -64,8 +64,8 @@
 /* Theme toggle button */
 .theme-toggle-btn {
   background: transparent;
-  border: 2px solid #ffd54f;
-  color: #ffd54f;
+  border: 2px solid #c084fc;
+  color: #c084fc;
   width: 38px;
   height: 38px;
   border-radius: 50%;
@@ -77,9 +77,9 @@
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .theme-toggle-btn:hover {
-  background: #ffd54f;
-  color: #18305a;
-  box-shadow: 0 4px 16px rgba(255,213,79,0.35);
+  background: #c084fc;
+  color: #1a0a2e;
+  box-shadow: 0 4px 16px rgba(192,132,252,0.35);
 }
 .theme-toggle-btn.mobile {
   width: 44px;
@@ -102,7 +102,7 @@
 .navbar-hamburger .bar {
   width: 26px;
   height: 3px;
-  background: #ffd54f;
+  background: #c084fc;
   margin: 4px 0;
   border-radius: 2px;
   transition: 0.3s;
@@ -126,8 +126,8 @@
   width: 70vw;
   max-width: 320px;
   height: 100vh;
-  background: rgba(24, 48, 90, 0.97);
-  box-shadow: -2px 0 16px rgba(24,90,219,0.12);
+  background: rgba(26, 10, 46, 0.97);
+  box-shadow: -2px 0 16px rgba(124,58,237,0.12);
   z-index: 110;
   flex-direction: column;
   padding: 4.5rem 2rem 2rem 2rem;
@@ -177,7 +177,7 @@
 }
 .theme-light .theme-toggle-btn:hover {
   background: #1b2740;
-  color: #ffd54f;
+  color: #c084fc;
 }
 
 /* ====== DARK THEME OVERRIDES (PURE BLACK) ====== */
@@ -187,16 +187,16 @@
   box-shadow: 0 2px 16px rgba(0,0,0,0.7);
 }
 .theme-dark .navbar-brand {
-  color: #ffd54f;
+  color: #c084fc;
 }
 .theme-dark .nav-link {
   color: #e5e5e5;
 }
 .theme-dark .nav-link:hover, .theme-dark .nav-link.active {
-  color: #ffd54f;
+  color: #c084fc;
 }
 .theme-dark .nav-link::after {
-  background: #ffd54f;
+  background: #c084fc;
 }
 .theme-dark .navbar-mobile-menu {
   background: rgba(0, 0, 0, 0.98);
@@ -207,11 +207,11 @@
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .theme-dark .theme-toggle-btn {
-  border-color: #ffd54f;
-  color: #ffd54f;
+  border-color: #c084fc;
+  color: #c084fc;
 }
 .theme-dark .theme-toggle-btn:hover {
-  background: #ffd54f;
+  background: #c084fc;
   color: #000000;
 }
 
