@@ -139,7 +139,7 @@ function Home() {
       message: e.target.message.value,
     };
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://portfolio-8etq.onrender.com';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       const response = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
