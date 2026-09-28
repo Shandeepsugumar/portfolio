@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks, no-unused-vars */
 import React, { useRef, useState, useEffect } from "react";
 import profileImg from "../assets/portfolio_welcome_page.jpg";
 import profileImg2 from "../assets/formal_pic.jpg";
@@ -174,7 +175,7 @@ function Home() {
         <div className="certificate-modal-overlay" onClick={() => setModalOpen(false)}>
           <div className="certificate-modal-content" onClick={e => e.stopPropagation()}>
             <button className="certificate-modal-close" onClick={() => setModalOpen(false)}>&times;</button>
-            <img src={modalImg} alt="Certificate" className="certificate-modal-img" />
+            <img src={modalImg} alt="Certificate" className="certificate-modal-img" loading="lazy" />
           </div>
         </div>
       )}
@@ -184,8 +185,14 @@ function Home() {
           <div className="hero-left">
             <h1 className="hero-name-main">SHANDEEP</h1>
             <h2 className="hero-title-main">Software Developer</h2>
+            <h3 className="hero-subtitle" style={{ color: 'var(--primary-color, #00f0ff)', fontSize: '1.2rem', marginTop: '0.5rem', fontWeight: 500 }}>Cloud & Full Stack Engineer | Aspiring Cloud Research Intern</h3>
             <p className="hero-intro">I create beautiful and interactive websites with modern technologies.<br />Welcome to my portfolio!</p>
-            <div className="hero-socials">
+            <div className="hero-actions" style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+              <a href="#projects" className="about-btn primary">View Projects</a>
+              <a href={resumePDF} onClick={handleDownloadCV} className="about-btn ghost" download="shandeep (Resume).pdf">Download Resume</a>
+              <a href="#contact" className="about-btn ghost">Contact Me</a>
+            </div>
+            <div className="hero-socials" style={{ marginTop: '1.5rem' }}>
               <a href="https://github.com/ShandeepSugumar" target="_blank" rel="noopener noreferrer" className="hero-social-icon facebook"><FaGithub /></a>
               <a href="https://linkedin.com/in/shandeep-sugumar-bb5203220" target="_blank" rel="noopener noreferrer" className="hero-social-icon linkedin"><FaLinkedin /></a>
               <a href="mailto:shandeepgeek@gmail.com" className="hero-social-icon instagram"><FaEnvelope /></a>
@@ -216,13 +223,13 @@ function Home() {
               }}
             >
               <div className="innovative-profile-glow"></div>
-              <img src={profileImg} alt="Profile" className="hero-profile-img" />
+              <img src={profileImg} alt="Profile" className="hero-profile-img" loading="lazy" />
             </div>
           </div>
         </div>
       </section>
       {/* About Section */}
-      <section id="about" className="about-section">
+      <section id="about" className="about-section reveal-on-scroll">
         <div
           className="about-card-modern innovative-about-card"
           onMouseMove={(e) => {
@@ -245,7 +252,7 @@ function Home() {
         >
           <div className="innovative-about-glow"></div>
           <div className="about-img-wrapper">
-            <img src={profileImg2} alt="Profile" className="about-profile-img" />
+            <img src={profileImg2} alt="Profile" className="about-profile-img" loading="lazy" />
           </div>
           <div className="about-content">
             <h2 className="about-title">About Me</h2>
@@ -296,6 +303,27 @@ function Home() {
                           <div className="about-timeline-item">
                             <div className="dot"></div>
                             <div className="content">
+                              <h4>Education: M.Sc Software Systems</h4>
+                              <p>Kongu Engineering College (Aug 2022 - Mar 2027) | CGPA: 7.70</p>
+                            </div>
+                          </div>
+                          <div className="about-timeline-item">
+                            <div className="dot"></div>
+                            <div className="content">
+                              <h4>Web Developer (Intern) @ CoderOne</h4>
+                              <p>Remote (Jun 2024 - Sep 2024). Built a full-stack communication platform with JWT auth and RBAC.</p>
+                            </div>
+                          </div>
+                          <div className="about-timeline-item">
+                            <div className="dot"></div>
+                            <div className="content">
+                              <h4>Technology Simulation @ Deloitte</h4>
+                              <p>Remote (Jul 2025 - Aug 2025). Completed cloud-oriented tasks and technical documentation.</p>
+                            </div>
+                          </div>
+                          <div className="about-timeline-item">
+                            <div className="dot"></div>
+                            <div className="content">
                               <h4>Full-Stack Projects</h4>
                               <p>Built MERN web apps, JavaFX desktop apps, and Flutter mobile apps with CI/CD.</p>
                             </div>
@@ -329,58 +357,74 @@ function Home() {
         </div>
       </section>
       {/* Skills Section - Split Layout */}
-      <section id="skills" className="skills-section skills-spline-section" ref={skillsSectionRef}>
+      <section id="skills" className="skills-section skills-spline-section reveal-on-scroll" ref={skillsSectionRef}>
         <h2 className="skills-title">Skills & Technologies</h2>
         <div className="skills-split-layout">
           {/* Left Side - Skill Content */}
           <div className="skills-content-left">
             <div className="skills-category">
               <h3 className="skills-category-title">
-                <FaReact className="skills-category-icon" /> Frontend
+                <FaReact className="skills-category-icon" /> Frontend & Mobile
               </h3>
               <div className="skills-badges">
-                <span className="skill-badge"><FaReact /> React</span>
-                <span className="skill-badge"><FaHtml5 /> HTML5</span>
-                <span className="skill-badge"><FaCss3Alt /> CSS3</span>
+                <span className="skill-badge"><FaReact /> React.js</span>
                 <span className="skill-badge"><SiJavascript /> JavaScript</span>
-                <span className="skill-badge"><SiBootstrap /> Bootstrap</span>
                 <span className="skill-badge"><SiFlutter /> Flutter</span>
-              </div>
-            </div>
-            <div className="skills-category">
-              <h3 className="skills-category-title">
-                <FaNodeJs className="skills-category-icon" /> Backend
-              </h3>
-              <div className="skills-badges">
-                <span className="skill-badge"><FaJava /> Java</span>
-                <span className="skill-badge"><FaNodeJs /> Node.js</span>
-                <span className="skill-badge"><SiExpress /> Express</span>
-                <span className="skill-badge"><SiPython /> Python</span>
-                <span className="skill-badge"><SiC /> C</span>
                 <span className="skill-badge"><SiDart /> Dart</span>
+                <span className="skill-badge"><FaHtml5 /> HTML</span>
+                <span className="skill-badge"><FaCss3Alt /> CSS</span>
+                <span className="skill-badge"><SiBootstrap /> Bootstrap</span>
               </div>
             </div>
             <div className="skills-category">
               <h3 className="skills-category-title">
-                <FaDatabase className="skills-category-icon" /> Database & Cloud
+                <FaNodeJs className="skills-category-icon" /> Backend & OOP
               </h3>
               <div className="skills-badges">
+                <span className="skill-badge"><SiC /> C</span>
+                <span className="skill-badge"><FaJava /> Java</span>
+                <span className="skill-badge"><SiPython /> Python</span>
+                <span className="skill-badge"><FaNodeJs /> Node.js</span>
+                <span className="skill-badge"><SiExpress /> Express.js</span>
+                <span className="skill-badge">REST APIs</span>
+                <span className="skill-badge">JWT Auth</span>
+              </div>
+            </div>
+            <div className="skills-category">
+              <h3 className="skills-category-title">
+                <FaDatabase className="skills-category-icon" /> Databases
+              </h3>
+              <div className="skills-badges">
+                <span className="skill-badge">PostgreSQL</span>
+                <span className="skill-badge">SQL</span>
                 <span className="skill-badge"><SiMongodb /> MongoDB</span>
-                <span className="skill-badge"><SiMysql /> MySQL</span>
                 <span className="skill-badge"><SiFirebase /> Firebase</span>
-                <span className="skill-badge"><SiVercel /> Vercel</span>
-                <span className="skill-badge"><SiRender /> Render</span>
               </div>
             </div>
             <div className="skills-category">
               <h3 className="skills-category-title">
-                <FaTools className="skills-category-icon" /> DevOps & Tools
+                <FaTools className="skills-category-icon" /> Cloud & DevOps
               </h3>
               <div className="skills-badges">
+                <span className="skill-badge"><FaAws /> AWS</span>
                 <span className="skill-badge"><FaDocker /> Docker</span>
-                <span className="skill-badge"><FaGit /> Git</span>
+                <span className="skill-badge">Kubernetes</span>
+                <span className="skill-badge">Jenkins</span>
+                <span className="skill-badge">CI/CD</span>
                 <span className="skill-badge"><FaLinux /> Linux</span>
-                <span className="skill-badge"><SiAndroidstudio /> Android Studio</span>
+                <span className="skill-badge"><FaGit /> Git</span>
+                <span className="skill-badge"><FaGithub /> GitHub</span>
+              </div>
+            </div>
+            <div className="skills-category">
+              <h3 className="skills-category-title">
+                <FaReact className="skills-category-icon" /> AI / ML
+              </h3>
+              <div className="skills-badges">
+                <span className="skill-badge">TensorFlow Lite</span>
+                <span className="skill-badge">Hugging Face</span>
+                <span className="skill-badge">Groq LLM</span>
+                <span className="skill-badge">CNN / LSTM</span>
               </div>
             </div>
           </div>
@@ -403,20 +447,59 @@ function Home() {
         </div>
       </section>
       {/* Projects Section */}
-      <section id="projects" className="projects-section">
+      <section id="projects" className="projects-section reveal-on-scroll">
         <h2 className="projects-title">Projects</h2>
 
         {/* Interactive Tabs */}
         {(() => {
-          const categories = [
-            { key: 'Mobile', label: 'Mobile Apps' },
-            { key: 'Web', label: 'Web Apps' },
+                    const categories = [
+            { key: 'All', label: 'All Projects' },
+            { key: 'Full Stack', label: 'Full Stack' },
+            { key: 'Mobile', label: 'Mobile' },
+            { key: 'AI-ML', label: 'AI/ML' },
+            { key: 'Cloud-DevOps', label: 'Cloud & DevOps' },
             { key: 'Java', label: 'Java Apps' },
-            { key: 'DevOps', label: 'DevOps' },
             { key: 'Research', label: 'Research' }
           ];
 
           const allProjects = [
+            {
+              id: 'p_assetflow',
+              title: 'AssetFlow',
+              summary: 'Enterprise Asset & Resource Management System. Multi-tier platform with resource-allocation logic for tracking and distributing assets across teams. Led a 4-person team.',
+              hrefs: [
+                { href: '#', label: 'Live Demo', live: true },
+                { href: '#', label: 'GitHub' }
+              ],
+              tags: ['React', 'Vite', 'Tailwind', 'Express', 'PostgreSQL'],
+              category: 'Full Stack',
+              featured: true,
+            },
+            {
+              id: 'p_spotifycares',
+              title: 'SpotifyCares AI Support Agent',
+              summary: 'RAG-Based Intent Classification & Response Evaluation. Outperformed baseline systems on real Twitter support data using Groq LLM. LLM-as-judge scores validated against human ratings using Cohen\'s kappa.',
+              hrefs: [
+                { href: '#', label: 'Live Demo', live: true },
+                { href: '#', label: 'GitHub' }
+              ],
+              tags: ['RAG', 'Groq LLM', 'AI', 'Intent Classification'],
+              category: 'AI-ML',
+              featured: true,
+            },
+            {
+              id: 'p_feedtoread',
+              title: 'FeedToRead',
+              summary: 'AI-Powered Personal News Aggregator. Two-stage LLM pipeline (FastAPI, Groq, OpenRouter) that summarizes multi-source articles and semantically deduplicates cross-source stories using embedding-based retrieval and LLM-driven conflict resolution.',
+              hrefs: [
+                { href: '#', label: 'Live Demo', live: true },
+                { href: '#', label: 'GitHub' }
+              ],
+              tags: ['FastAPI', 'Groq', 'OpenRouter', 'AI'],
+              category: 'AI-ML',
+              featured: true,
+            },
+
             {
               id: 'p1',
               title: 'EASE - AI-Powered Waste Management',
@@ -446,12 +529,15 @@ function Home() {
             },
             {
               id: 'p9',
-              title: 'Emotional Recognition Mobile App',
-              summary: 'AI-powered Flutter mobile application featuring deep learning models for human emotion recognition. Developed three specialized models: speech emotion recognition (SER), heart rate-based emotion detection, and a fusion model with attention mechanism. The multimodal fusion model achieves 94% accuracy by combining physiological signals (heart rate) and vocal features through advanced attention-based fusion architecture. Includes real-time emotion detection, multi-modal emotion analysis, intelligent emotion classification, and cross-platform support for Android, iOS, and other platforms.',
-              hrefs: [{ href: 'https://github.com/Shandeepsugumar/Emotional-Recognition.git', label: 'GitHub' }],
-              tags: ['Flutter', 'ML', 'TensorFlow Lite', 'Mobile', 'AI', 'Deep Learning', 'Attention Mechanism'],
-              category: 'Mobile',
-              featured: false,
+              title: 'Multimodal Emotion Recognition App',
+              summary: 'CNN/LSTM models for multimodal emotion classification, deployed on-device via TensorFlow Lite in a Flutter app with Firebase cloud sync. Extended into a co-authored research paper accepted at ICAECT 2026. Includes real-time emotion detection and cross-platform support.',
+              hrefs: [
+                { href: 'https://github.com/Shandeepsugumar/Emotional-Recognition.git', label: 'GitHub' },
+                { href: '#', label: 'Live Demo', live: true }
+              ],
+              tags: ['Flutter', 'TensorFlow Lite', 'CNN', 'LSTM', 'Firebase'],
+              category: 'AI-ML',
+              featured: true,
             },
             {
               id: 'p10',
@@ -468,7 +554,7 @@ function Home() {
               summary: 'Bootstrap + Node + MongoDB e-learning platform with CI/CD using Docker, Jenkins, Kubernetes.',
               hrefs: [{ href: 'https://github.com/ShandeepSugumar/online-learning-platform.git', label: 'GitHub' }],
               tags: ['Node', 'MongoDB', 'Bootstrap', 'CI/CD'],
-              category: 'Web',
+              category: 'Full Stack',
               featured: true,
             },
             {
@@ -480,18 +566,19 @@ function Home() {
                 { href: 'https://podcast-orpin.vercel.app', label: 'Live Demo', live: true },
               ],
               tags: ['React', 'Express', 'API'],
-              category: 'Web',
+              category: 'Full Stack',
               featured: false,
             },
             {
               id: 'p6',
-              title: 'Brain Burst',
-              summary: 'Interactive quiz game platform with a clean web interface and live challenge flow.',
+              title: 'BrainBurst, Multiplayer Quiz Platform',
+              summary: 'A WebSocket-based multiplayer app built to support thousands of concurrent sessions. Uses Groq LLMs for AI question generation, with rate limiting, caching, and CI/CD deployment via Docker.',
               hrefs: [
                 { href: 'https://quize-game-platform.vercel.app', label: 'Live Demo', live: true },
+                { href: '#', label: 'GitHub' }
               ],
-              tags: ['React', 'Quiz', 'Web'],
-              category: 'Web',
+              tags: ['React', 'WebSockets', 'Groq LLM', 'Docker'],
+              category: 'Full Stack',
               featured: true,
             },
             {
@@ -502,7 +589,7 @@ function Home() {
                 { href: 'https://chatzero-ai.vercel.app/login', label: 'Live Demo', live: true },
               ],
               tags: ['React', 'Quiz', 'Web'],
-              category: 'Web',
+              category: 'Full Stack',
               featured: false,
             },
             {
@@ -538,7 +625,7 @@ function Home() {
               summary: 'Docker images, Jenkins pipelines, and Kubernetes manifests for automated deployments.',
               hrefs: [{ href: 'https://github.com/ShandeepSugumar/online-learning-platform.git', label: 'Repository' }],
               tags: ['Docker', 'Jenkins', 'K8s'],
-              category: 'DevOps',
+              category: 'Cloud-DevOps',
               featured: true,
             },
             {
@@ -547,12 +634,12 @@ function Home() {
               summary: 'Complete CI/CD pipeline implementation for Podcast streaming application using Jenkins and Docker. Features automated build and deployment pipeline with Jenkinsfile, Docker containerization with Dockerfile, automated email notifications on pipeline triggers, localhost deployment using Docker images and containers, and seamless integration with MERN stack application for continuous integration and deployment.',
               hrefs: [{ href: 'https://podcast-orpin.vercel.app', label: 'Live Demo', live: true },],
               tags: ['Jenkins', 'Docker', 'CI/CD', 'DevOps', 'Pipeline'],
-              category: 'DevOps',
+              category: 'Cloud-DevOps',
               featured: true,
             },
           ];
 
-          const [activeCategory, setActiveCategory] = useState('Mobile');
+          const [activeCategory, setActiveCategory] = useState('All');
           const [showFeatured, setShowFeatured] = useState(false);
           const projectsGridRef = useRef(null);
           const [currentScrollIndex, setCurrentScrollIndex] = useState(0);
@@ -562,7 +649,7 @@ function Home() {
             if (element) element.scrollLeft = 0;
           };
 
-          const filtered = allProjects.filter(p => p.category === activeCategory && (!showFeatured || p.featured));
+          const filtered = allProjects.filter(p => (activeCategory === 'All' || p.category === activeCategory) && (!showFeatured || p.featured));
 
         useEffect(() => {
           if (filtered.length < 3) return;
@@ -755,7 +842,7 @@ function Home() {
       </section>
 
       {/* Certificates Section */}
-      <section id="certificates" className="certificates-section">
+      <section id="certificates" className="certificates-section reveal-on-scroll">
         <h2 className="certificates-title">Certificates & Credentials</h2>
         {(() => {
           const certCategories = [
@@ -767,6 +854,37 @@ function Home() {
           ];
 
           const allCertificates = [
+            {
+              id: 'c_aws',
+              title: 'AWS Cloud Practitioner Essentials',
+              issuer: 'AWS',
+              category: 'other',
+              thumbnail: 'https://via.placeholder.com/150?text=AWS',
+              fullImage: 'https://via.placeholder.com/800x600?text=AWS',
+              type: 'In Progress',
+              year: '2026',
+            },
+            {
+              id: 'c_java',
+              title: 'Core Java',
+              issuer: 'ETS Academy',
+              category: 'other',
+              thumbnail: 'https://via.placeholder.com/150?text=Core+Java',
+              fullImage: 'https://via.placeholder.com/800x600?text=Core+Java',
+              type: 'Course Completion',
+              year: '2025',
+            },
+            {
+              id: 'c_sql',
+              title: 'Database and SQL',
+              issuer: 'Infosys SpringBoard',
+              category: 'other',
+              thumbnail: 'https://via.placeholder.com/150?text=SQL',
+              fullImage: 'https://via.placeholder.com/800x600?text=SQL',
+              type: 'Course Completion',
+              year: '2025',
+            },
+
             {
               id: 'c1',
               title: 'Oracle Certified Java SE 17 Developer',
@@ -963,7 +1081,7 @@ function Home() {
                       >
                         <div className="innovative-certificate-glow"></div>
                         <div className="certificate-card-image-wrapper">
-                          <img src={cert.thumbnail} alt={cert.title} className="certificate-card-img" />
+                          <img src={cert.thumbnail} alt={cert.title} className="certificate-card-img" loading="lazy" />
                           <div className="certificate-card-overlay">
                             <button
                               className="certificate-view-btn"
@@ -1001,7 +1119,7 @@ function Home() {
       </section>
 
       {/* Achievements & Activities Section */}
-      <section id="achievements" className="achievements-section">
+      <section id="achievements" className="achievements-section reveal-on-scroll">
         <h2 className="achievements-title">Achievements & Activities</h2>
         {(() => {
           const achievementTypes = [
@@ -1013,6 +1131,40 @@ function Home() {
           ];
 
           const allAchievements = [
+            {
+              id: 'a2',
+              title: 'Solved 200+ DSA problems on LeetCode',
+              description: 'Earned the 50 Days Badge in 2025 and 2026 for consistent problem-solving and algorithmic thinking.',
+              type: 'activity',
+              category: 'activity',
+              image: 'https://via.placeholder.com/400x300?text=LeetCode',
+              year: '2025-26',
+              position: 'Badge Winner',
+              icon: '💻',
+            },
+            {
+              id: 'a3',
+              title: '1st Place, Ideathon 2025',
+              description: 'Secured 1st place in the university Ideathon by pitching a novel AI-driven solution.',
+              type: 'competition',
+              category: 'competition',
+              image: 'https://via.placeholder.com/400x300?text=Ideathon',
+              year: '2025',
+              position: '1st Place',
+              icon: '🥇',
+            },
+            {
+              id: 'a4',
+              title: '1st Place, Proof of Concept 2025',
+              description: 'Won 1st place for delivering a highly functional and scalable proof of concept.',
+              type: 'competition',
+              category: 'competition',
+              image: 'https://via.placeholder.com/400x300?text=POC',
+              year: '2025',
+              position: '1st Place',
+              icon: '🏅',
+            },
+
             {
               id: 'a1',
               title: 'KEC Hackathon Winner',
@@ -1170,7 +1322,7 @@ function Home() {
                             </div>
                           </div>
                           <div className="achievement-card-image-wrapper">
-                            <img src={achievement.image} alt={achievement.title} className="achievement-card-img" />
+                            <img src={achievement.image} alt={achievement.title} className="achievement-card-img" loading="lazy" />
                             <div className="achievement-card-overlay">
                               <button
                                 className="achievement-view-btn"
@@ -1208,7 +1360,7 @@ function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="contact-section contact-modern">
+      <section id="contact" className="contact-section contact-modern reveal-on-scroll">
         <div className="contact-card innovative-contact-card">
           <div className="innovative-contact-glow"></div>
           <div className="contact-modern-container">
