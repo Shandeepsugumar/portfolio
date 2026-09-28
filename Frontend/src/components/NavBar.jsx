@@ -1,9 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 import "./navbar.css";
 
 function NavBar({ theme = 'light', onToggleTheme = () => {} }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, { rootMargin: '-30% 0px -70% 0px', threshold: 0 });
+
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach(sec => observer.observe(sec));
+
+    return () => sections.forEach(sec => observer.unobserve(sec));
+  }, []);
 
   // Custom smooth scroll with highlight
   const handleNavClick = (e, sectionId) => {
@@ -11,16 +27,12 @@ function NavBar({ theme = 'light', onToggleTheme = () => {} }) {
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
-      section.classList.add("section-highlight");
-      setTimeout(() => {
-        section.classList.remove("section-highlight");
-      }, 800);
     }
     setMenuOpen(false); // Close menu on link click (mobile)
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
       <div className="navbar-brand">
         {/* Brand icon */}
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -40,12 +52,16 @@ function NavBar({ theme = 'light', onToggleTheme = () => {} }) {
         <span className="bar"></span>
       </button>
       <div className="navbar-links">
-        <a href="#home" className="nav-link" onClick={e => handleNavClick(e, "home")}>Home</a>
-        <a href="#about" className="nav-link" onClick={e => handleNavClick(e, "about")}>About</a>
-        <a href="#skills" className="nav-link" onClick={e => handleNavClick(e, "skills")}>Skills</a>
-        <a href="#projects" className="nav-link" onClick={e => handleNavClick(e, "projects")}>Projects</a>
-        <a href="#certificates" className="nav-link" onClick={e => handleNavClick(e, "certificates")}>Certificates</a>
-        <a href="#contact" className="nav-link" onClick={e => handleNavClick(e, "contact")}>Contact</a>
+        {['home', 'about', 'skills', 'projects', 'certificates', 'contact'].map(id => (
+          <a
+            key={id}
+            href={`#${id}`}
+            className={`nav-link${activeSection === id ? ' active' : ''}`}
+            onClick={e => handleNavClick(e, id)}
+          >
+            {id.charAt(0).toUpperCase() + id.slice(1)}
+          </a>
+        ))}
         <button
           className="theme-toggle-btn"
           type="button"
@@ -61,12 +77,16 @@ function NavBar({ theme = 'light', onToggleTheme = () => {} }) {
         className={`navbar-mobile-menu${menuOpen ? ' open' : ''}`}
         aria-hidden={!menuOpen}
       >
-        <a href="#home" className="nav-link" onClick={e => handleNavClick(e, "home")}>Home</a>
-        <a href="#about" className="nav-link" onClick={e => handleNavClick(e, "about")}>About</a>
-        <a href="#skills" className="nav-link" onClick={e => handleNavClick(e, "skills")}>Skills</a>
-        <a href="#projects" className="nav-link" onClick={e => handleNavClick(e, "projects")}>Projects</a>
-        <a href="#certificates" className="nav-link" onClick={e => handleNavClick(e, "certificates")}>Certificates</a>
-        <a href="#contact" className="nav-link" onClick={e => handleNavClick(e, "contact")}>Contact</a>
+        {['home', 'about', 'skills', 'projects', 'certificates', 'contact'].map(id => (
+          <a
+            key={id}
+            href={`#${id}`}
+            className={`nav-link${activeSection === id ? ' active' : ''}`}
+            onClick={e => handleNavClick(e, id)}
+          >
+            {id.charAt(0).toUpperCase() + id.slice(1)}
+          </a>
+        ))}
         <button
           className="theme-toggle-btn mobile"
           type="button"
